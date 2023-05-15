@@ -4,11 +4,11 @@ namespace Data.Services.Interfaces
 {
     public interface ICartServices
     {
-        bool CreateCart(Cart thao);
-        bool UpdateCart(Cart thao);
-        bool DeleteCart(Guid id);
-        List<Cart> GetAllCarts();
-        Cart GetCartById(Guid id);
-        //List<Cart> GetCartByName(string Cartname);
+        Task<bool> CreateCart(Cart obj);
+        Task<bool> UpdateCart(Cart obj);
+        Task<bool> DeleteCart(Guid id);
+        Task<List<Cart>> GetAllCarts();
+        Task<Cart> GetCartById(Guid id);
+
     }
 }

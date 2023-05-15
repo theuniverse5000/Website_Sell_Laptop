@@ -1,80 +1,84 @@
 ﻿using Data.Models;
 using Data.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Services.Implements
 {
     public class BillDetailServices : IBillDetailServices
     {
         ApplicationDbContext _dbContext;
-        IProductDetailServices _productDetailServices;
         public BillDetailServices()
         {
             _dbContext = new ApplicationDbContext();
-            _productDetailServices = new ProductDetailServices();
         }
-        public bool CreateBillDetail(BillDetail thao)
+
+        public async Task<bool> CreateBillDetail(BillDetail obj)
         {
             try
             {
-                _dbContext.BillDetails.Add(thao);
-                _dbContext.SaveChanges();
-                return true;
+                if (obj == null) return false;
+                else
+                {
+                    await _dbContext.BillDetails.AddAsync(obj);
+                    await _dbContext.SaveChangesAsync();
+                    return true;
+                }
             }
             catch (Exception)
             {
+
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteBillDetail(Guid id)
+        {
+            try
+            {
+                var x = await _dbContext.BillDetails.FindAsync(id);
+                if (x == null) return false;
+                else
+                {
+                    _dbContext.BillDetails.Remove(x);
+                    await _dbContext.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
                 return false;
             }
 
         }
 
-        public bool DeleteBillDetail(Guid id)
+        public async Task<List<BillDetail>> GetAllBillDetails()
+        {
+            return await _dbContext.BillDetails.ToListAsync();
+        }
+
+        public async Task<BillDetail> GetBillDetailById(Guid id)
+        {
+            return await _dbContext.BillDetails.FindAsync(id);
+        }
+
+        public async Task<bool> UpdateBillDetail(BillDetail obj)
         {
             try
             {
-                var linh = _dbContext.BillDetails.Find(id);
-                _dbContext.BillDetails.Remove(linh);
-                _dbContext.SaveChanges();
-                return true;
+                var x = await _dbContext.BillDetails.FindAsync(obj.Id);
+                if (x == null) return false;
+                else
+                {
+                    x.Quantity = obj.Quantity;
+                    x.Price = obj.Price;
+                    _dbContext.BillDetails.Update(x);
+                    await _dbContext.SaveChangesAsync();
+                    return true;
+                }
             }
             catch (Exception)
             {
-                return false;
-            }
-        }
-        public List<BillDetail> GetAllBillDetails()
-        {
-            return _dbContext.BillDetails.ToList();
-        }
-
-        public BillDetail GetBillDetailById(Guid id)
-        {
-            return _dbContext.BillDetails.Find(id);
-        }
-
-        //public List<BillDetail> GetBillDetailByName(string BillDetailname)
-        //{
-        //    return _dbContext.BillDetails.Where(a=>a.)
-        //}
-
-        //public bool IsBillDetailnameExist(string BillDetailname)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public bool UpdateBillDetail(BillDetail thao)
-        {
-            try
-            {
-                var linh = _dbContext.BillDetails.Find(thao.Id);
-                linh.Quantity = thao.Quantity;
-                linh.Price = thao.Price;
-                _dbContext.BillDetails.Update(linh);
-                _dbContext.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-
                 return false;
             }
         }
