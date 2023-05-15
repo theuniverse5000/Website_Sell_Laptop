@@ -1,11 +1,7 @@
-using Sell_Laptop_API.Services.Implements;
-using Sell_Laptop_API.Services.Interfaces;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<IRamServices, RamServices>();// Add DI
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

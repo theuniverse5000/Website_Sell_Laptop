@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Sell_Laptop_API.Models;
+﻿using Data.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Sell_Laptop_Web.Controllers
 {
@@ -62,8 +62,7 @@ namespace Sell_Laptop_Web.Controllers
 
             return View();
         }
-        [HttpGet]
-      //  [Route("id")]
+        //[HttpGet]
         public ActionResult DeleteRam(Guid id)
         {
             using (var client = new HttpClient())

@@ -1,4 +1,4 @@
-﻿@model Sell_Laptop_API.Models.Ram
+﻿@model Data.Models.Ram
 
 @{
     ViewData["Title"] = "CreateRam";
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateRam" method="post">
+        <form asp-action="CreateRam">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Ma" class="control-label"></label>
@@ -21,6 +21,16 @@
                 <label asp-for="ThongSo" class="control-label"></label>
                 <input asp-for="ThongSo" class="form-control" />
                 <span asp-validation-for="ThongSo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoKheCam" class="control-label"></label>
+                <input asp-for="SoKheCam" class="form-control" />
+                <span asp-validation-for="SoKheCam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MoTa" class="control-label"></label>
+                <input asp-for="MoTa" class="form-control" />
+                <span asp-validation-for="MoTa" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Data.Models;
+using Data.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Sell_Laptop_API.Models;
-using Sell_Laptop_API.Services.Interfaces;
 
 namespace Sell_Laptop_API.Controllers
 {
@@ -10,7 +8,7 @@ namespace Sell_Laptop_API.Controllers
     [ApiController]
     public class RamAPIController : ControllerBase
     {
-      //  private readonly ApplicationDbContext _dbContext;
+        //  private readonly ApplicationDbContext _dbContext;
         //  ApplicationDbContext _dbContext;
         private readonly IRamServices _ramServices;
         public RamAPIController(IRamServices ramServices)
@@ -34,8 +32,14 @@ namespace Sell_Laptop_API.Controllers
             rams.Id = Guid.NewGuid();
             rams.Ma = r.Ma;
             rams.ThongSo = r.ThongSo;
-            _ramServices.CreateRam(rams);
-            return Ok("Thêm thành công");
+            rams.SoKheCam = r.SoKheCam;
+            rams.MoTa = r.MoTa;
+            if (_ramServices.CreateRam(rams))
+            {
+                return Ok("Thêm thành công");
+            }
+            else return BadRequest("Thất bai");
+
         }
         //[HttpPut("id")]
         //public ActionResult UpdateRam(Ram rv)
@@ -51,9 +55,9 @@ namespace Sell_Laptop_API.Controllers
         [Route("id")]
         public ActionResult DeleteRam(Guid Id)
         {
-           // var x = _ramServices.GetAllRams().FirstOrDefault(a=>a.Id==Id);
-            _ramServices.DeleteRam(Id);
-            return Ok("Bạn đã xóa thành công");
+            if (_ramServices.DeleteRam(Id))
+                return Ok("Bạn đã xóa thành công");
+            else return BadRequest("Thất bái !");
         }
     }
 }
