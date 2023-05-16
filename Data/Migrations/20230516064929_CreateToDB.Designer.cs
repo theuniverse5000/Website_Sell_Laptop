@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230513165833_CreateToDB")]
+    [Migration("20230516064929_CreateToDB")]
     partial class CreateToDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,12 +106,12 @@ namespace Data.Migrations
 
                     b.Property<string>("Ten")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("Ten");
 
                     b.Property<string>("ThongSo")
                         .IsRequired()
-                        .HasColumnType("varchar(70)")
+                        .HasColumnType("nvarchar(70)")
                         .HasColumnName("ThongSo");
 
                     b.HasKey("Id");
@@ -168,7 +168,7 @@ namespace Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(70)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("Name");
 
                     b.HasKey("Id");
@@ -188,8 +188,13 @@ namespace Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(70)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("Name");
+
+                    b.Property<string>("ThongSo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(70)")
+                        .HasColumnName("ThongSo");
 
                     b.HasKey("Id");
 
@@ -206,8 +211,10 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SoKheCam")
-                        .HasColumnType("int");
+                    b.Property<string>("MoTa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("MoTa");
 
                     b.Property<string>("ThongSo")
                         .IsRequired()
@@ -356,7 +363,7 @@ namespace Data.Migrations
 
                     b.Property<string>("MoTa")
                         .IsRequired()
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("nvarchar(300)")
                         .HasColumnName("MoTa");
 
                     b.Property<int>("SoKheCam")
@@ -364,7 +371,7 @@ namespace Data.Migrations
 
                     b.Property<string>("ThongSo")
                         .IsRequired()
-                        .HasColumnType("varchar(70)")
+                        .HasColumnType("nvarchar(70)")
                         .HasColumnName("ThongSo");
 
                     b.HasKey("Id");
@@ -400,12 +407,12 @@ namespace Data.Migrations
 
                     b.Property<string>("ChatLieu")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("nvarchar(150)")
                         .HasColumnName("ChatLieu");
 
                     b.Property<string>("KichCo")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("KichCo");
 
                     b.Property<string>("Ma")
@@ -414,12 +421,12 @@ namespace Data.Migrations
 
                     b.Property<string>("TanSo")
                         .IsRequired()
-                        .HasColumnType("varchar(20)")
+                        .HasColumnType("nvarchar(20)")
                         .HasColumnName("TanSo");
 
                     b.Property<string>("Ten")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("nvarchar(150)")
                         .HasColumnName("Ten");
 
                     b.HasKey("Id");

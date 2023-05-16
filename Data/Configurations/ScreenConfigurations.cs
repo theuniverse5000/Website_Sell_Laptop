@@ -11,10 +11,10 @@ namespace Data.Configurations
             builder.ToTable("Screen");
             builder.HasKey(p => p.Id);
             builder.Property(a => a.Ma).IsRequired();
-            builder.Property(a => a.Ten).HasColumnName("Ten").HasColumnType("varchar(100)").IsRequired();
-            builder.Property(a => a.KichCo).HasColumnName("KichCo").HasColumnType("varchar(50)").IsRequired();
-            builder.Property(a => a.TanSo).HasColumnName("TanSo").HasColumnType("varchar(20)").IsRequired();
-            builder.Property(a => a.ChatLieu).HasColumnName("ChatLieu").HasColumnType("varchar(100)").IsRequired();
+            builder.Property(a => a.Ten).HasColumnName("Ten").HasColumnType("nvarchar(150)").IsRequired();
+            builder.Property(a => a.KichCo).HasColumnName("KichCo").HasColumnType("nvarchar(50)").IsRequired();
+            builder.Property(a => a.TanSo).HasColumnName("TanSo").HasColumnType("nvarchar(20)").IsRequired();
+            builder.Property(a => a.ChatLieu).HasColumnName("ChatLieu").HasColumnType("nvarchar(150)").IsRequired();
         }
     }
 }

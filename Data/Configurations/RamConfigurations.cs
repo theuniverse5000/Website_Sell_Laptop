@@ -11,8 +11,8 @@ namespace Data.Configurations
             builder.ToTable("RAM");
             builder.HasKey(p => p.Id);
             builder.Property(a => a.Ma).IsRequired();
-            builder.Property(a => a.ThongSo).HasColumnName("ThongSo").HasColumnType("varchar(70)").IsRequired();
-            builder.Property(a => a.MoTa).HasColumnName("MoTa").HasColumnType("varchar(200)").IsRequired();
+            builder.Property(a => a.ThongSo).HasColumnName("ThongSo").HasColumnType("nvarchar(70)").IsRequired();
+            builder.Property(a => a.MoTa).HasColumnName("MoTa").HasColumnType("nvarchar(300)").IsRequired();
         }
     }
 }

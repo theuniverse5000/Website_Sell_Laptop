@@ -11,7 +11,7 @@ namespace Data.Configurations
             builder.ToTable("Color");
             builder.HasKey(p => p.Id);
             builder.Property(a => a.Ma).IsRequired();
-            builder.Property(a => a.Name).HasColumnName("Name").HasColumnType("varchar(70)").IsRequired();
+            builder.Property(a => a.Name).HasColumnName("Name").HasColumnType("nvarchar(100)").IsRequired();
         }
     }
 }

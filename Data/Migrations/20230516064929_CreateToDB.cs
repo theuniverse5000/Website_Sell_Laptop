@@ -15,8 +15,8 @@ namespace Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ten = table.Column<string>(type: "varchar(200)", nullable: false),
-                    ThongSo = table.Column<string>(type: "varchar(70)", nullable: false)
+                    Ten = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    ThongSo = table.Column<string>(type: "nvarchar(70)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +29,7 @@ namespace Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(70)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +42,8 @@ namespace Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "varchar(70)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    ThongSo = table.Column<string>(type: "nvarchar(70)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +57,7 @@ namespace Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ThongSo = table.Column<string>(type: "varchar(70)", nullable: false),
-                    SoKheCam = table.Column<int>(type: "int", nullable: false)
+                    MoTa = table.Column<string>(type: "nvarchar(150)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,9 +82,9 @@ namespace Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ThongSo = table.Column<string>(type: "varchar(70)", nullable: false),
+                    ThongSo = table.Column<string>(type: "nvarchar(70)", nullable: false),
                     SoKheCam = table.Column<int>(type: "int", nullable: false),
-                    MoTa = table.Column<string>(type: "varchar(200)", nullable: false)
+                    MoTa = table.Column<string>(type: "nvarchar(300)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -110,10 +111,10 @@ namespace Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ten = table.Column<string>(type: "varchar(100)", nullable: false),
-                    KichCo = table.Column<string>(type: "varchar(50)", nullable: false),
-                    TanSo = table.Column<string>(type: "varchar(20)", nullable: false),
-                    ChatLieu = table.Column<string>(type: "varchar(100)", nullable: false)
+                    Ten = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    KichCo = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    TanSo = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    ChatLieu = table.Column<string>(type: "nvarchar(150)", nullable: false)
                 },
                 constraints: table =>
                 {
