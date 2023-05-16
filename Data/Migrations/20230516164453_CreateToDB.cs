@@ -195,17 +195,18 @@ namespace Data.Migrations
                     IdRam = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdCpu = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdHardDrive = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CardVGAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ScreenId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    IdScreen = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdCardVGA = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductDetail_CardVGA_CardVGAId",
-                        column: x => x.CardVGAId,
+                        name: "FK_ProductDetail_CardVGA_IdCardVGA",
+                        column: x => x.IdCardVGA,
                         principalTable: "CardVGA",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProductDetail_Color_IdColor",
                         column: x => x.IdColor,
@@ -237,10 +238,11 @@ namespace Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductDetail_Screen_ScreenId",
-                        column: x => x.ScreenId,
+                        name: "FK_ProductDetail_Screen_IdScreen",
+                        column: x => x.IdScreen,
                         principalTable: "Screen",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -406,9 +408,9 @@ namespace Data.Migrations
                 column: "IDManufacturer");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductDetail_CardVGAId",
+                name: "IX_ProductDetail_IdCardVGA",
                 table: "ProductDetail",
-                column: "CardVGAId");
+                column: "IdCardVGA");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductDetail_IdColor",
@@ -436,9 +438,9 @@ namespace Data.Migrations
                 column: "IdRam");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductDetail_ScreenId",
+                name: "IX_ProductDetail_IdScreen",
                 table: "ProductDetail",
-                column: "ScreenId");
+                column: "IdScreen");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_IdRole",

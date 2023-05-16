@@ -24,6 +24,10 @@ namespace Data.Configurations
              HasForeignKey(p => p.IdRam);
             builder.HasOne(p => p.HardDrive).WithMany(p => p.ProductDetails).
              HasForeignKey(p => p.IdHardDrive);
+            builder.HasOne(p => p.CardVGA).WithMany(p => p.ProductDetails).
+           HasForeignKey(p => p.IdCardVGA);
+            builder.HasOne(p => p.Screen).WithMany(p => p.ProductDetails).
+         HasForeignKey(p => p.IdScreen);
 
 
         }

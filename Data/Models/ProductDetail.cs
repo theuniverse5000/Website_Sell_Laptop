@@ -20,26 +20,17 @@ namespace Data.Models
         public Guid IdRam { get; set; }
         public Guid IdCpu { get; set; }
         public Guid IdHardDrive { get; set; }
-
+        public Guid IdScreen { get; set; }
+        public Guid IdCardVGA { get; set; }
         public virtual Product Product { get; set; }
-
-
         public virtual Color Color { get; set; }
-
-
         public virtual Ram Ram { get; set; }
-
-
         public virtual Cpu Cpu { get; set; }
-
-
+        public virtual Screen Screen { get; set; }
+        public virtual CardVGA CardVGA { get; set; }
         public virtual HardDrive HardDrive { get; set; }
-
-
         public ICollection<Image> Imagess { get; set; }
         public ICollection<BillDetail> BillDetails { get; set; }
-
-
         public ICollection<CartDetail> CartDetails { get; set; }
 
 

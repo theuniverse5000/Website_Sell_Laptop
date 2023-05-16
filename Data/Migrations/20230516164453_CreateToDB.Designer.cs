@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230516064929_CreateToDB")]
+    [Migration("20230516164453_CreateToDB")]
     partial class CreateToDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -296,11 +296,11 @@ namespace Data.Migrations
                     b.Property<int>("AvailableQuantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("CardVGAId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("IdCardVGA")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("IdColor")
                         .HasColumnType("uniqueidentifier");
@@ -317,6 +317,9 @@ namespace Data.Migrations
                     b.Property<Guid>("IdRam")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("IdScreen")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("ImportPrice")
                         .HasColumnType("decimal");
 
@@ -326,15 +329,12 @@ namespace Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal");
 
-                    b.Property<Guid?>("ScreenId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CardVGAId");
+                    b.HasIndex("IdCardVGA");
 
                     b.HasIndex("IdColor");
 
@@ -346,7 +346,7 @@ namespace Data.Migrations
 
                     b.HasIndex("IdRam");
 
-                    b.HasIndex("ScreenId");
+                    b.HasIndex("IdScreen");
 
                     b.ToTable("ProductDetail", (string)null);
                 });
@@ -594,9 +594,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.ProductDetail", b =>
                 {
-                    b.HasOne("Data.Models.CardVGA", null)
+                    b.HasOne("Data.Models.CardVGA", "CardVGA")
                         .WithMany("ProductDetails")
-                        .HasForeignKey("CardVGAId");
+                        .HasForeignKey("IdCardVGA")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Data.Models.Color", "Color")
                         .WithMany("ProductDetails")
@@ -628,9 +630,13 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Models.Screen", null)
+                    b.HasOne("Data.Models.Screen", "Screen")
                         .WithMany("ProductDetails")
-                        .HasForeignKey("ScreenId");
+                        .HasForeignKey("IdScreen")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CardVGA");
 
                     b.Navigation("Color");
 
@@ -641,6 +647,8 @@ namespace Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Ram");
+
+                    b.Navigation("Screen");
                 });
 
             modelBuilder.Entity("Data.Models.User", b =>
