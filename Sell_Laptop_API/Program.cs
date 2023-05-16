@@ -11,6 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddTransient<IRamServices, RamServices>();// Add DI
 builder.Services.AddTransient<IBillServices, BillServices>();
+builder.Services.AddTransient<IBillDetailServices, BillDetailServices>();
+builder.Services.AddTransient<ICartServices, CartServices>();
+builder.Services.AddTransient<ICartDetailServices, CartDetailServices>();
+builder.Services.AddTransient<IProductDetailServices, ProductDetailServices>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sell_Laptop_Web", "Sell_Lap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sell_Laptop_API", "Sell_Laptop_API\Sell_Laptop_API.csproj", "{F9D065B7-1CDF-4A62-805A-10AF7FF7D5FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{944EA09A-4A72-4318-90F6-0B65631CCA0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{944EA09A-4A72-4318-90F6-0B65631CCA0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
