@@ -6,26 +6,26 @@ namespace Sell_Laptop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BillController : ControllerBase
+    public class CartController : ControllerBase
     {
-        private readonly IBillServices _billServices;
-        public BillController(IBillServices billServices)
+        private readonly ICartServices _cartServices;
+        public CartController(ICartServices cartServices)
         {
-            _billServices = billServices;
+            _cartServices = cartServices;
         }
         [HttpGet]
-        public async Task<ActionResult> GetAllBills()
+        public async Task<ActionResult> GetAllCarts()
         {
-            var listBill = await _billServices.GetAllBills();
-            return Ok(listBill);
+            var listCart = await _cartServices.GetAllCarts();
+            return Ok(listCart);
 
         }
         [HttpPost]
-        public async Task<ActionResult> CreateBill(Bill obj)
+        public async Task<ActionResult> CreateCart(Cart obj)
         {
             if (obj != null)
             {
-                if (await _billServices.CreateBill(obj))
+                if (await _cartServices.CreateCart(obj))
                 {
                     return Ok("Bạn thêm thành công");
                 }
@@ -33,29 +33,29 @@ namespace Sell_Laptop_API.Controllers
             }
             else
             {
-                return BadRequest("Hóa đơn không tồn tại");
+                return BadRequest("Không tồn tại");
             }
         }
         [HttpPut]
-        public async Task<ActionResult> UpdateBill(Bill obj)
+        public async Task<ActionResult> UpdateCart(Cart obj)
         {
             if (obj != null)
             {
-                if (await _billServices.UpdateBill(obj))
+                if (await _cartServices.UpdateCart(obj))
                 {
-                    return Ok("Bạn thêm thành công");
+                    return Ok("Bạn update thành công");
                 }
                 return BadRequest("Không thành công !");
             }
             else
             {
-                return BadRequest("Thất bại");
+                return BadRequest("Không tồn tại");
             }
         }
         [HttpDelete("id")]
-        public async Task<ActionResult> DeleteBill(Guid id)
+        public async Task<ActionResult> DeleteCart(Guid id)
         {
-            if (await _billServices.DeleteBill(id))
+            if (await _cartServices.DeleteCart(id))
             {
                 return Ok("Bạn đã xóa thành công");
             }
@@ -65,10 +65,10 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<ActionResult> GetBillById(Guid id)
+        public async Task<ActionResult> GetCartById(Guid id)
         {
-            var bill = await _billServices.GetBillById(id);
-            return Ok(bill);
+            var cart = await _cartServices.GetCartById(id);
+            return Ok(cart);
         }
     }
 }

@@ -6,26 +6,26 @@ namespace Sell_Laptop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BillDetailController : ControllerBase
+    public class ProductDetailController : ControllerBase
     {
-        private readonly IBillDetailServices _billDetailServices;
-        public BillDetailController(IBillDetailServices billDetailServices)
+        private readonly IProductDetailServices _productDetailServices;
+        public ProductDetailController(IProductDetailServices productDetailServices)
         {
-            _billDetailServices = billDetailServices;
+            _productDetailServices = productDetailServices;
         }
         [HttpGet]
-        public async Task<ActionResult> GetAllBillDetails()
+        public async Task<ActionResult> GetAllProductDetails()
         {
-            var listBillDetail = await _billDetailServices.GetAllBillDetails();
-            return Ok(listBillDetail);
+            var listProductDetail = await _productDetailServices.GetAllProductDetails();
+            return Ok(listProductDetail);
 
         }
         [HttpPost]
-        public async Task<ActionResult> CreateBillDetail(BillDetail obj)
+        public async Task<ActionResult> CreateProductDetail(ProductDetail obj)
         {
             if (obj != null)
             {
-                if (await _billDetailServices.CreateBillDetail(obj))
+                if (await _productDetailServices.CreateProductDetail(obj))
                 {
                     return Ok("Bạn thêm thành công");
                 }
@@ -37,11 +37,11 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpPut]
-        public async Task<ActionResult> UpdateBillDetail(BillDetail obj)
+        public async Task<ActionResult> UpdateProductDetail(ProductDetail obj)
         {
             if (obj != null)
             {
-                if (await _billDetailServices.UpdateBillDetail(obj))
+                if (await _productDetailServices.UpdateProductDetail(obj))
                 {
                     return Ok("Bạn update thành công");
                 }
@@ -53,9 +53,9 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpDelete("id")]
-        public async Task<ActionResult> DeleteBillDetail(Guid id)
+        public async Task<ActionResult> DeleteProductDetail(Guid id)
         {
-            if (await _billDetailServices.DeleteBillDetail(id))
+            if (await _productDetailServices.DeleteProductDetail(id))
             {
                 return Ok("Bạn đã xóa thành công");
             }
@@ -65,10 +65,10 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<ActionResult> GetBillDetailById(Guid id)
+        public async Task<ActionResult> GetProductDetailById(Guid id)
         {
-            var billDetail = await _billDetailServices.GetBillDetailById(id);
-            return Ok(billDetail);
+            var productDetail = await _productDetailServices.GetProductDetailById(id);
+            return Ok(productDetail);
         }
     }
 }
