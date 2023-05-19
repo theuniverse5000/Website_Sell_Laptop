@@ -1,0 +1,93 @@
+﻿@using Data.Models.ViewModels;
+@*@model IEnumerable<Data.Models.ViewModels.ProductDetailView>*@
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<h1>Quản lý sản phẩm</h1>
+<a asp-controller="ProductDetail" asp-action="Create" class="btn btn-outline-primary">Thêm sản phẩm</a>
+<div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+
+            <th scope="col">Mã sản phẩm</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Nhà sản xuất</th>
+            <th scope="col">Màu sắc</th>
+            <th scope="col">CPU</th>
+            <th scope="col">RAM</th>
+            <th scope="col">Ổ cứng</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Giá nhập</th>
+            <th scope="col">Giá bán</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Hành động</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in (List<ProductDetailView>)ViewBag.listProductDetail)
+        {
+            <tr class="table-primary">
+                <th scope="row">@t.Ma</th>
+              @*  <td>
+                    @{
+                        var a = System.IO.Path.GetExtension(t.LinkImage);
+                    }
+                    @if (@imageExtensions.Contains(a.Trim()))
+                    {
+                        <img src="/UploadImages/@t.LinkImage" height="100px">
+                    }
+                    else
+                    {
+                        <p>Ảnh lỗi</p>
+                        <img src="/UploadImages/asus.jpg" height="100px">
+                    }
+                </td>
+              *@
+
+                <td>@t.NameProduct</td>
+                <td>@t.NameManufacturer</td>
+                <td>@t.NameColor</td>
+                <td>@t.NameCpu</td>
+                <td>@t.ThongSoRam</td>
+                <td>@t.ThongSoHardDrive (@t.MoTaHardDrive)</td>
+                <td>@t.Description</td>
+                <td>$@t.ImportPrice</td>
+                <td>$@t.Price</td>
+                <td>@t.AvailableQuantity</td>
+                <td>@t.Status</td>
+                <td>
+                    <a asp-action="Update" asp-route-id="@t.Id" class="btn btn-outline-success">Sửa</a>
+                    @* <button type="button" class="btn btn-outline-success">
+                @Html.ActionLink("Xóa", "Delete", new { id=t.Id })
+                </button>*@
+                    <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-outline-success">Delete</a>
+                    <a asp-action="GetChiTietSanPham" asp-route-id="@t.Id" class="btn btn-outline-success">Chi tiết</a>
+
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+

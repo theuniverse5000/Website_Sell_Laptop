@@ -1,0 +1,86 @@
+﻿@model Data.Models.ProductDetail
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ProductDetail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Ma" class="control-label"></label>
+                <input asp-for="Ma" class="form-control" />
+                <span asp-validation-for="Ma" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImportPrice" class="control-label"></label>
+                <input asp-for="ImportPrice" class="form-control" />
+                <span asp-validation-for="ImportPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AvailableQuantity" class="control-label"></label>
+                <input asp-for="AvailableQuantity" class="form-control" />
+                <span asp-validation-for="AvailableQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdProduct" class="control-label"></label>
+                <input asp-for="IdProduct" class ="form-control" asp-items="ViewBag.IdProduct">
+            </div>
+            <div class="form-group">
+                <label asp-for="IdColor" class="control-label"></label>
+                <input asp-for="IdColor" class ="form-control" asp-items="ViewBag.IdColor">
+            </div>
+            <div class="form-group">
+                <label asp-for="IdRam" class="control-label"></label>
+                <input asp-for="IdRam" class ="form-control" asp-items="ViewBag.IdRam">
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCpu" class="control-label"></label>
+                <input asp-for="IdCpu" class ="form-control" asp-items="ViewBag.IdCpu">
+            </div>
+            <div class="form-group">
+                <label asp-for="IdHardDrive" class="control-label"></label>
+                <input asp-for="IdHardDrive" class ="form-control" asp-items="ViewBag.IdHardDrive">
+            </div>
+            <div class="form-group">
+                <label asp-for="IdScreen" class="control-label"></label>
+                <input asp-for="IdScreen" class ="form-control" asp-items="ViewBag.IdScreen">
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCardVGA" class="control-label"></label>
+                <input asp-for="IdCardVGA" class ="form-control" asp-items="ViewBag.IdCardVGA">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

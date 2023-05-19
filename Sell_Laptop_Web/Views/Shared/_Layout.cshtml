@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Sell_Laptop_Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Bootswatch.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Sell_Laptop_Web.styles.css" asp-append-version="true" />
 </head>
@@ -12,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Sell_Laptop_Web</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,7 +29,43 @@
                     </ul>
                 </div>
             </div>
+
         </nav>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="ProductDetail" asp-action="Index">Chi tiết sản phẩm</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Bill" asp-action="ShowBill">Quản lý hóa đơn</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Product" asp-action="Index">Sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Producer" asp-action="Index">
+                                Nhà sản xuất
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Image" asp-action="Index">Hình ảnh</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Color" asp-action="Index">Màu sắc</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Ram" asp-action="Index">RAM</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Cpu" asp-action="Index">CPU</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Ssd" asp-action="Index">SSD</a>
+                        </li>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
