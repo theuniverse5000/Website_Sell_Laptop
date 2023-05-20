@@ -13,7 +13,7 @@ namespace Sell_Laptop_Web.Controllers
             {
                 client.BaseAddress = new Uri("https://localhost:44346/api/");
                 //HTTP GET
-                var responseTask = client.GetAsync("RamAPI");
+                var responseTask = client.GetAsync("Ram");
                 responseTask.Wait();
 
                 var result = responseTask.Result;
@@ -48,7 +48,7 @@ namespace Sell_Laptop_Web.Controllers
                 client.BaseAddress = new Uri("https://localhost:44346/api/RamAPI");
 
                 //HTTP POST
-                var postTask = client.PostAsJsonAsync<Ram>("RamAPI", r);
+                var postTask = client.PostAsJsonAsync<Ram>("Ram", r);
                 postTask.Wait();
 
                 var result = postTask.Result;
@@ -67,7 +67,7 @@ namespace Sell_Laptop_Web.Controllers
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri($"https://localhost:44346/api/RamAPI/id?Id={id}");
+                client.BaseAddress = new Uri($"https://localhost:44346/api/Ram/id?Id={id}");
 
                 //HTTP DELETE
                 var deleteTask = client.DeleteAsync(client.BaseAddress);

@@ -1,13 +1,17 @@
 ﻿using Data.Models;
+using Data.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Sell_Laptop_Web.Services;
 
 namespace Sell_Laptop_Web.Controllers
 {
     public class ProductDetailController : Controller
     {
-        public async Task<IActionResult> Index()
+        CallAPIServices callAPI = new CallAPIServices();
+        public Task<IActionResult> Index()
         {
-            IEnumerable<ProductDetail> productDetails = null;
+            IEnumerable<ProductDetailView> productDetails = null;
 
             using (var client = new HttpClient())
             {
@@ -19,30 +23,57 @@ namespace Sell_Laptop_Web.Controllers
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsAsync<IList<ProductDetail>>();
+                    var readTask = result.Content.ReadAsAsync<IList<ProductDetailView>>();
                     readTask.Wait();
 
                     productDetails = readTask.Result;
+                    ViewBag.listProductDetail = productDetails;
                 }
                 else //web api sent error response 
                 {
                     //log response status here..
+                    productDetails = Enumerable.Empty<ProductDetailView>();
 
-                    productDetails = Enumerable.Empty<ProductDetail>();
-
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                    ModelState.AddModelError(string.Empty, "Có lỗi xảy ra");
                 }
+                return Task.FromResult<IActionResult>(View(productDetails));
             }
 
-            return View(productDetails);
+            //  return View(await callAPI.GetAll<ProductDetailView>("https://localhost:44346/api/ProductDetail"));
         }
         public async Task<ActionResult> Create()
         {
+
+            var httpClient = new HttpClient(); // tạo 1 http client để call api
+            var reponseCpu = await httpClient.GetAsync("https://localhost:44346/api/Cpu");
+            var reponseRam = await httpClient.GetAsync("https://localhost:44346/api/Ram");
+            var reponseHardDrive = await httpClient.GetAsync("https://localhost:44346/api/HardDrive");
+            var reponseScreen = await httpClient.GetAsync("https://localhost:44346/api/Screen");
+            var reponseProduct = await httpClient.GetAsync("https://localhost:44346/api/Product");
+            var reponseColor = await httpClient.GetAsync("https://localhost:44346/api/Color");
+            var reponseCardVGA = await httpClient.GetAsync("https://localhost:44346/api/CardVGA");
+
+            string apiDataCpu = await reponseCpu.Content.ReadAsStringAsync();
+            string apiDataRam = await reponseRam.Content.ReadAsStringAsync();
+            string apiDataHardDrive = await reponseHardDrive.Content.ReadAsStringAsync();
+            string apiDataScreen = await reponseScreen.Content.ReadAsStringAsync();
+            string apiDataProduct = await reponseProduct.Content.ReadAsStringAsync();
+            string apiDataColor = await reponseColor.Content.ReadAsStringAsync();
+            string apiCardVGA = await reponseCardVGA.Content.ReadAsStringAsync();
+            ViewBag.listCpu = JsonConvert.DeserializeObject<List<Cpu>>(apiDataCpu);
+            ViewBag.listRam = JsonConvert.DeserializeObject<List<Ram>>(apiDataRam);
+            ViewBag.listHardDrive = JsonConvert.DeserializeObject<List<HardDrive>>(apiDataHardDrive);
+            ViewBag.listScreen = JsonConvert.DeserializeObject<List<Screen>>(apiDataScreen);
+            ViewBag.listProduct = JsonConvert.DeserializeObject<List<Product>>(apiDataProduct);
+            ViewBag.listColor = JsonConvert.DeserializeObject<List<Color>>(apiDataColor);
+            ViewBag.listCardVGA = JsonConvert.DeserializeObject<List<CardVGA>>(apiCardVGA);
             return View();
         }
         [HttpPost]
         public async Task<ActionResult> Create(ProductDetail productDetail)
         {
+
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:44346/api/ProductDetail");
@@ -58,12 +89,12 @@ namespace Sell_Laptop_Web.Controllers
                 }
             }
 
-            ModelState.AddModelError(string.Empty, "Server Error. Please contact administrator.");
+            ModelState.AddModelError(string.Empty, "Thêm thất bại !!!");
 
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Update(Guid id)
+        public Task<IActionResult> Update(Guid id)
         {
             ProductDetail productDetail = null;
 
@@ -83,11 +114,11 @@ namespace Sell_Laptop_Web.Controllers
                     productDetail = readTask.Result;
                 }
             }
-            return View(productDetail);
+            return Task.FromResult<IActionResult>(View(productDetail));
             //   return View();
         }
         // [HttpPut]
-        public async Task<IActionResult> Update(ProductDetail productDetail)
+        public Task<IActionResult> Update(ProductDetail productDetail)
         {
             using (var client = new HttpClient())
             {
@@ -101,13 +132,13 @@ namespace Sell_Laptop_Web.Controllers
                 if (result.IsSuccessStatusCode)
                 {
 
-                    return RedirectToAction("Index");
+                    return Task.FromResult<IActionResult>(RedirectToAction("Index"));
                 }
             }
-            return View(productDetail);
+            return Task.FromResult<IActionResult>(View(productDetail));
         }
 
-        public async Task<IActionResult> Delete(Guid id)
+        public Task<IActionResult> Delete(Guid id)
         {
             using (var client = new HttpClient())
             {
@@ -120,12 +151,10 @@ namespace Sell_Laptop_Web.Controllers
                 var result = deleteTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-
-                    return RedirectToAction("Index");
+                    return Task.FromResult<IActionResult>(RedirectToAction("Index"));
                 }
             }
-
-            return RedirectToAction("Index");
+            return Task.FromResult<IActionResult>(RedirectToAction("Index"));
         }
 
     }
