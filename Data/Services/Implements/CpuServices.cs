@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Data.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Services.Implements
 {
@@ -10,12 +11,12 @@ namespace Data.Services.Implements
         {
             _dbContext = new ApplicationDbContext();
         }
-        public bool CreateCpu(Cpu thao)
+        public async Task<bool> CreateCpu(Cpu obj)
         {
             try
             {
-                _dbContext.Cpus.Add(thao);
-                _dbContext.SaveChanges();
+                await _dbContext.Cpus.AddAsync(obj);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -24,13 +25,13 @@ namespace Data.Services.Implements
             }
         }
 
-        public bool DeleteCpu(Guid id)
+        public async Task<bool> DeleteCpu(Guid id)
         {
             try
             {
-                var thao = _dbContext.Cpus.Find(id);
-                _dbContext.Cpus.Remove(thao);
-                _dbContext.SaveChanges();
+                var t = await _dbContext.Cpus.FindAsync(id);
+                _dbContext.Cpus.Remove(t);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -39,26 +40,27 @@ namespace Data.Services.Implements
             }
         }
 
-        public List<Cpu> GetAllCpus()
+        public async Task<List<Cpu>> GetAllCpus()
         {
-            return _dbContext.Cpus.ToList();
+            return await _dbContext.Cpus.ToListAsync();
         }
-        public bool IsMaCpuExist(string Ma)
+        public async Task<bool> IsMaCpuExist(string ma)
         {
-            var linh = _dbContext.Cpus;
-            var thao = linh.FirstOrDefault(a => a.Ma == Ma);
-            if (thao != null) return true;
+            var l = _dbContext.Cpus;
+            var t = await l.FirstOrDefaultAsync(x => x.Ma == ma);
+            if (t != null) return true;
             else return false;
         }
 
-        public bool UpdateCpu(Cpu thao)
+        public async Task<bool> UpdateCpu(Cpu obj)
         {
             try
             {
-                var linh = _dbContext.Cpus.Find(thao.Id);
-                linh.Name = thao.Name;
-                _dbContext.Cpus.Update(linh);
-                _dbContext.SaveChanges();
+                var l = await _dbContext.Cpus.FindAsync(obj.Id);
+                l.Name = obj.Name;
+                l.ThongSo = obj.ThongSo;
+                _dbContext.Cpus.Update(l);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)

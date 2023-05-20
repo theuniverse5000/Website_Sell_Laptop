@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<IRamServices, RamServices>();// Add DI
+builder.Services.AddTransient<ICpuServices, CpuServices>();
 builder.Services.AddTransient<IBillServices, BillServices>();
 builder.Services.AddTransient<IBillDetailServices, BillDetailServices>();
 builder.Services.AddTransient<ICartServices, CartServices>();

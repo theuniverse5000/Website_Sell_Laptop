@@ -9,9 +9,11 @@ namespace Sell_Laptop_API.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartServices _cartServices;
-        public CartController(ICartServices cartServices)
+        private readonly IProductDetailServices _productDetailServices;
+        public CartController(ICartServices cartServices, IProductDetailServices productDetailServices)
         {
             _cartServices = cartServices;
+            _productDetailServices = productDetailServices;
         }
         [HttpGet]
         public async Task<ActionResult> GetAllCarts()

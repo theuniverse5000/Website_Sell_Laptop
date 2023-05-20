@@ -6,12 +6,10 @@ namespace Sell_Laptop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RamAPIController : ControllerBase
+    public class RamController : ControllerBase
     {
-        //  private readonly ApplicationDbContext _dbContext;
-        //  ApplicationDbContext _dbContext;
         private readonly IRamServices _ramServices;
-        public RamAPIController(IRamServices ramServices)
+        public RamController(IRamServices ramServices)
         {
             //_dbContext = new ApplicationDbContext();
             _ramServices = ramServices;

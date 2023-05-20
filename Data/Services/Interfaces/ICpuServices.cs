@@ -4,10 +4,10 @@ namespace Data.Services.Interfaces
 {
     public interface ICpuServices
     {
-        bool CreateCpu(Cpu c);
-        bool UpdateCpu(Cpu c);
-        bool DeleteCpu(Guid id);
-        bool IsMaCpuExist(string ma);
-        List<Cpu> GetAllCpus();
+        Task<bool> CreateCpu(Cpu obj);
+        Task<bool> UpdateCpu(Cpu obj);
+        Task<bool> DeleteCpu(Guid id);
+        Task<bool> IsMaCpuExist(string ma);
+        Task<List<Cpu>> GetAllCpus();
     }
 }

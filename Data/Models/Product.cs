@@ -16,7 +16,7 @@ namespace Data.Models
         public ICollection<ProductDetail> ProductDetails { get; set; }
 
 
-       
+
 
     }
 }

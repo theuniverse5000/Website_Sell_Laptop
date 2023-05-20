@@ -8,23 +8,9 @@ namespace Data.Services.Implements
     public class ProductDetailServices : IProductDetailServices
     {
         ApplicationDbContext _dbContext;
-        ICpuServices _cpu;
-        IRamServices _ram;
-        IHardDriveServices _hardDrive;
-        IColorServices _color;
-        IProductServices _product;
-        IImageServices _image;
-        IManufacturerServices _manufacturer;
         public ProductDetailServices()
         {
             _dbContext = new ApplicationDbContext();
-            _cpu = new CpuServices();
-            _ram = new RamServices();
-            _hardDrive = new HardDriveServices();
-            _color = new ColorServices();
-            _product = new ProductServices();
-            _image = new ImageServices();
-            _manufacturer = new ManufacturerServices();
         }
 
         public async Task<bool> CreateProductDetail(ProductDetail obj)
@@ -72,9 +58,57 @@ namespace Data.Services.Implements
             return await _dbContext.ProductDetails.ToListAsync();
         }
 
-        public Task<List<ProductDetailView>> GetAllProductDetailsPhunData()
+        public async Task<List<ProductDetailView>> GetAllProductDetailsPhunData()
         {
-            throw new NotImplementedException();
+            List<ProductDetailView> listProductDetails = new List<ProductDetailView>();
+            listProductDetails = (
+                        from a in await _dbContext.ProductDetails.ToListAsync()
+                        join b in await _dbContext.Rams.ToListAsync() on a.IdRam equals b.Id
+                        join c in await _dbContext.Cpus.ToListAsync() on a.IdCpu equals c.Id
+                        join d in await _dbContext.HardDrives.ToListAsync() on a.IdHardDrive equals d.Id
+                        join e in await _dbContext.Colors.ToListAsync() on a.IdColor equals e.Id
+                        join f in await _dbContext.CardVGAs.ToListAsync() on a.IdCardVGA equals f.Id
+                        join g in await _dbContext.Screens.ToListAsync() on a.IdScreen equals g.Id
+                        // join h in await _dbContext.Images.ToListAsync() on a.Id equals h.IdProductDetail
+                        join i in await _dbContext.Products.ToListAsync() on a.IdProduct equals i.Id
+                        join k in await _dbContext.Manufacturers.ToListAsync() on i.IDManufacturer equals k.Id
+
+                        select new ProductDetailView
+                        {
+                            Id = a.Id,
+                            Ma = a.Ma,
+                            ImportPrice = a.ImportPrice,
+                            Price = a.Price,
+                            AvailableQuantity = a.AvailableQuantity,
+                            Status = a.Status,
+                            Description = a.Description,
+                            ThongSoRam = b.ThongSo,
+                            MaRam = b.Ma,
+                            SoKheCamRam = b.SoKheCam,
+                            MoTaRam = b.MoTa,
+                            NameCpu = c.Name,
+                            ThongSoCpu = c.ThongSo,
+                            MaCpu = c.Ma,
+                            ThongSoHardDrive = d.ThongSo,
+                            MoTaHardDrive = d.MoTa,
+                            MaHardDrive = d.Ma,
+                            NameColor = e.Name,
+                            MaColor = e.Ma,
+                            MaCardVGA = f.Ma,
+                            TenCardVGA = f.Ten,
+                            ThongSoCardVGA = f.ThongSo,
+                            TenManHinh = g.Ten,
+                            KichCoManHinh = g.KichCo,
+                            TanSoManHinh = g.TanSo,
+                            ChatLieuManHinh = g.ChatLieu,
+                            NameProduct = i.Name,
+                            NameManufacturer = k.Name,
+                            //  LinkImage = h.LinkImage
+
+                        }
+
+               ).ToList();
+            return listProductDetails;
         }
 
         public Task<ProductDetailView> GetChiTietProductDetails(Guid id)

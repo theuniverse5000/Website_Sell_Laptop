@@ -14,9 +14,10 @@ namespace Sell_Laptop_API.Controllers
             _productDetailServices = productDetailServices;
         }
         [HttpGet]
+        //[Route("get-all-")]
         public async Task<ActionResult> GetAllProductDetails()
         {
-            var listProductDetail = await _productDetailServices.GetAllProductDetails();
+            var listProductDetail = await _productDetailServices.GetAllProductDetailsPhunData();
             return Ok(listProductDetail);
 
         }
@@ -25,6 +26,10 @@ namespace Sell_Laptop_API.Controllers
         {
             if (obj != null)
             {
+                if (await _productDetailServices.IsMaProductDetailExist(obj.Ma))
+                {
+                    return BadRequest("Mã đã tồn tại !");
+                }
                 if (await _productDetailServices.CreateProductDetail(obj))
                 {
                     return Ok("Bạn thêm thành công");
