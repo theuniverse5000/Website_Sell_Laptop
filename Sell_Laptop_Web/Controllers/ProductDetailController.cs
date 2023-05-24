@@ -9,6 +9,17 @@ namespace Sell_Laptop_Web.Controllers
     public class ProductDetailController : Controller
     {
         CallAPIServices callAPI = new CallAPIServices();
+        static List<Ram> listRam;
+        static List<Cpu> listCpu;
+        static List<HardDrive> listHardDrive;
+        static List<Product> listProduct;
+        static List<Screen> listScreen;
+        static List<CardVGA> listCardVGA;
+        static List<Color> listColor;
+        public ProductDetailController()
+        {
+
+        }
         public Task<IActionResult> Index()
         {
             IEnumerable<ProductDetailView> productDetails = null;
@@ -43,7 +54,6 @@ namespace Sell_Laptop_Web.Controllers
         }
         public async Task<ActionResult> Create()
         {
-
             var httpClient = new HttpClient(); // tạo 1 http client để call api
             var reponseCpu = await httpClient.GetAsync("https://localhost:44346/api/Cpu");
             var reponseRam = await httpClient.GetAsync("https://localhost:44346/api/Ram");
@@ -60,19 +70,41 @@ namespace Sell_Laptop_Web.Controllers
             string apiDataProduct = await reponseProduct.Content.ReadAsStringAsync();
             string apiDataColor = await reponseColor.Content.ReadAsStringAsync();
             string apiCardVGA = await reponseCardVGA.Content.ReadAsStringAsync();
+
             ViewBag.listCpu = JsonConvert.DeserializeObject<List<Cpu>>(apiDataCpu);
+            listCpu = JsonConvert.DeserializeObject<List<Cpu>>(apiDataCpu);
             ViewBag.listRam = JsonConvert.DeserializeObject<List<Ram>>(apiDataRam);
+            listRam = JsonConvert.DeserializeObject<List<Ram>>(apiDataRam);
             ViewBag.listHardDrive = JsonConvert.DeserializeObject<List<HardDrive>>(apiDataHardDrive);
+            listHardDrive = JsonConvert.DeserializeObject<List<HardDrive>>(apiDataHardDrive);
             ViewBag.listScreen = JsonConvert.DeserializeObject<List<Screen>>(apiDataScreen);
+            listScreen = JsonConvert.DeserializeObject<List<Screen>>(apiDataScreen);
             ViewBag.listProduct = JsonConvert.DeserializeObject<List<Product>>(apiDataProduct);
+            listProduct = JsonConvert.DeserializeObject<List<Product>>(apiDataProduct);
             ViewBag.listColor = JsonConvert.DeserializeObject<List<Color>>(apiDataColor);
+            listColor = JsonConvert.DeserializeObject<List<Color>>(apiDataColor);
             ViewBag.listCardVGA = JsonConvert.DeserializeObject<List<CardVGA>>(apiCardVGA);
+            listCardVGA = JsonConvert.DeserializeObject<List<CardVGA>>(apiCardVGA);
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Create(ProductDetail productDetail)
+        public async Task<ActionResult> Create(ProductDetailView productDetailView)
         {
-
+            ProductDetail productDetail = new ProductDetail();
+            productDetail.Id = Guid.NewGuid();
+            productDetail.Ma = productDetailView.Ma;
+            productDetail.ImportPrice = productDetailView.ImportPrice;
+            productDetail.Price = productDetailView.Price;
+            productDetail.AvailableQuantity = productDetailView.AvailableQuantity;
+            productDetail.Description = productDetailView.Description;
+            productDetail.Status = productDetailView.Status;
+            productDetail.IdProduct = listProduct.FirstOrDefault(x => x.Name == productDetailView.NameProduct).Id;
+            productDetail.IdRam = listRam.FirstOrDefault(x => x.Ma == productDetailView.MaRam).Id;
+            productDetail.IdCpu = listCpu.FirstOrDefault(x => x.Ma == productDetailView.MaCpu).Id;
+            productDetail.IdHardDrive = listHardDrive.FirstOrDefault(x => x.Ma == productDetailView.MaHardDrive).Id;
+            productDetail.IdScreen = listScreen.FirstOrDefault(x => x.Ma == productDetailView.MaManHinh).Id;
+            productDetail.IdColor = listColor.FirstOrDefault(x => x.Ma == productDetailView.MaColor).Id;
+            productDetail.IdCardVGA = listCardVGA.FirstOrDefault(x => x.Ma == productDetailView.MaCardVGA).Id;
 
             using (var client = new HttpClient())
             {

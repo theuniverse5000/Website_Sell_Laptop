@@ -8,43 +8,35 @@
 
 <h4>ProductDetail</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Update" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-          
-            <div class="form-group">
-                <label asp-for="ImportPrice" class="control-label"></label>
-                <input asp-for="ImportPrice" class="form-control" />
-                <span asp-validation-for="ImportPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AvailableQuantity" class="control-label"></label>
-                <input asp-for="AvailableQuantity" class="form-control" />
-                <span asp-validation-for="AvailableQuantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-           
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+<form class="row g-3 was-validated" asp-action="Update" method="post">
+    <div class="form-floating col-md-4">
+        <input asp-for="ImportPrice" type="number" class="form-control" placeholder="ImportPrice"
+               required>
+        <label for="">Giá nhập</label>
+        <span asp-validation-for="ImportPrice" class="text-danger"></span>
     </div>
-</div>
+    <div class="form-floating col-md-4">
+        <input asp-for="Price" type="number" class="form-control" placeholder="giabangoc" required>
+        <label for="">Giá bán</label>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-floating col-md-4">
+        <input asp-for="AvailableQuantity" type="number" class="form-control" placeholder="AvailableQuantity" required>
+        <label for="">Số lượng </label>
+    </div>
+    <div class="form-floating col-md-6">
+        <input asp-for="Description" type="text" class="form-control" placeholder="Description" required>
+        <label for="">Mô tả</label>
+    </div>
+    <div class="form-floating col-md-6">
+        <input asp-for="Status" type="text" class="form-control" placeholder="Status" required>
+        <label for="">Tình trạng</label>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
