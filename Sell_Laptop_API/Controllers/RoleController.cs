@@ -6,32 +6,32 @@ namespace Sell_Laptop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CpuController : ControllerBase
+    public class RoleController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        public CpuController()
+        public RoleController()
         {
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _dbContext.Cpus.ToListAsync());
+            return Ok(await _dbContext.Roles.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Cpu obj)
+        public async Task<IActionResult> Create(Role obj)
         {
-            var listCpu = await _dbContext.Cpus.ToListAsync();
-            var t = listCpu.FirstOrDefault(x => x.Ma == obj.Ma);
+            var listRole = await _dbContext.Roles.ToListAsync();
+            var t = listRole.FirstOrDefault(x => x.RoleName == obj.RoleName);
             if (t != null)
             {
-                return BadRequest("Thất bại. Mã đã tồn tại");
+                return BadRequest("Thất bại. Chức vụ đã tồn tại");
             }
             else
             {
                 try
                 {
-                    await _dbContext.Cpus.AddAsync(obj);
+                    await _dbContext.Roles.AddAsync(obj);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Thành công");
                 }
@@ -43,14 +43,14 @@ namespace Sell_Laptop_API.Controllers
 
         }
         [HttpPut("id")]
-        public async Task<IActionResult> Update(Cpu obj)
+        public async Task<IActionResult> Update(Role obj)
         {
             try
             {
-                var l = await _dbContext.Cpus.FindAsync(obj.Id);
-                l.Name = obj.Name;
-                l.ThongSo = obj.ThongSo;
-                _dbContext.Cpus.Update(l);
+                var l = await _dbContext.Roles.FindAsync(obj.Id);
+                l.Description = obj.Description;
+                l.Status = obj.Status;
+                _dbContext.Roles.Update(l);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Thành công");
             }
@@ -64,8 +64,8 @@ namespace Sell_Laptop_API.Controllers
         {
             try
             {
-                var t = await _dbContext.Cpus.FindAsync(id);
-                _dbContext.Cpus.Remove(t);
+                var t = await _dbContext.Roles.FindAsync(id);
+                _dbContext.Roles.Remove(t);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Bạn đã xóa thành công");
             }
@@ -77,9 +77,8 @@ namespace Sell_Laptop_API.Controllers
         [HttpGet("id")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var cpu = await _dbContext.Cpus.FindAsync(id);
-            return Ok(cpu);
+            var role = await _dbContext.Roles.FindAsync(id);
+            return Ok(role);
         }
-
     }
 }

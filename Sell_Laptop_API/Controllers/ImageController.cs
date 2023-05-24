@@ -6,23 +6,23 @@ namespace Sell_Laptop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CpuController : ControllerBase
+    public class ImageController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        public CpuController()
+        public ImageController()
         {
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _dbContext.Cpus.ToListAsync());
+            return Ok(await _dbContext.Images.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Cpu obj)
+        public async Task<IActionResult> Create(Image obj)
         {
-            var listCpu = await _dbContext.Cpus.ToListAsync();
-            var t = listCpu.FirstOrDefault(x => x.Ma == obj.Ma);
+            var listImage = await _dbContext.Images.ToListAsync();
+            var t = listImage.FirstOrDefault(x => x.Ma == obj.Ma);
             if (t != null)
             {
                 return BadRequest("Thất bại. Mã đã tồn tại");
@@ -31,7 +31,7 @@ namespace Sell_Laptop_API.Controllers
             {
                 try
                 {
-                    await _dbContext.Cpus.AddAsync(obj);
+                    await _dbContext.Images.AddAsync(obj);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Thành công");
                 }
@@ -43,14 +43,13 @@ namespace Sell_Laptop_API.Controllers
 
         }
         [HttpPut("id")]
-        public async Task<IActionResult> Update(Cpu obj)
+        public async Task<IActionResult> Update(Image obj)
         {
             try
             {
-                var l = await _dbContext.Cpus.FindAsync(obj.Id);
-                l.Name = obj.Name;
-                l.ThongSo = obj.ThongSo;
-                _dbContext.Cpus.Update(l);
+                var l = await _dbContext.Images.FindAsync(obj.Id);
+                l.LinkImage = obj.LinkImage;
+                _dbContext.Images.Update(l);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Thành công");
             }
@@ -64,8 +63,8 @@ namespace Sell_Laptop_API.Controllers
         {
             try
             {
-                var t = await _dbContext.Cpus.FindAsync(id);
-                _dbContext.Cpus.Remove(t);
+                var t = await _dbContext.Images.FindAsync(id);
+                _dbContext.Images.Remove(t);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Bạn đã xóa thành công");
             }
@@ -77,9 +76,8 @@ namespace Sell_Laptop_API.Controllers
         [HttpGet("id")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var cpu = await _dbContext.Cpus.FindAsync(id);
-            return Ok(cpu);
+            var image = await _dbContext.Images.FindAsync(id);
+            return Ok(image);
         }
-
     }
 }

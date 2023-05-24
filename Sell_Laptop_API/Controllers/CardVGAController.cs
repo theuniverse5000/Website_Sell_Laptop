@@ -6,23 +6,23 @@ namespace Sell_Laptop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CpuController : ControllerBase
+    public class CardVGAController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        public CpuController()
+        public CardVGAController()
         {
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _dbContext.Cpus.ToListAsync());
+            return Ok(await _dbContext.CardVGAs.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Cpu obj)
+        public async Task<IActionResult> Create(CardVGA obj)
         {
-            var listCpu = await _dbContext.Cpus.ToListAsync();
-            var t = listCpu.FirstOrDefault(x => x.Ma == obj.Ma);
+            var listCardVGA = await _dbContext.CardVGAs.ToListAsync();
+            var t = listCardVGA.FirstOrDefault(x => x.Ma == obj.Ma);
             if (t != null)
             {
                 return BadRequest("Thất bại. Mã đã tồn tại");
@@ -31,7 +31,7 @@ namespace Sell_Laptop_API.Controllers
             {
                 try
                 {
-                    await _dbContext.Cpus.AddAsync(obj);
+                    await _dbContext.CardVGAs.AddAsync(obj);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Thành công");
                 }
@@ -43,14 +43,14 @@ namespace Sell_Laptop_API.Controllers
 
         }
         [HttpPut("id")]
-        public async Task<IActionResult> Update(Cpu obj)
+        public async Task<IActionResult> Update(CardVGA obj)
         {
             try
             {
-                var l = await _dbContext.Cpus.FindAsync(obj.Id);
-                l.Name = obj.Name;
+                var l = await _dbContext.CardVGAs.FindAsync(obj.Id);
+                l.Ten = obj.Ten;
                 l.ThongSo = obj.ThongSo;
-                _dbContext.Cpus.Update(l);
+                _dbContext.CardVGAs.Update(l);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Thành công");
             }
@@ -64,8 +64,8 @@ namespace Sell_Laptop_API.Controllers
         {
             try
             {
-                var t = await _dbContext.Cpus.FindAsync(id);
-                _dbContext.Cpus.Remove(t);
+                var t = await _dbContext.CardVGAs.FindAsync(id);
+                _dbContext.CardVGAs.Remove(t);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Bạn đã xóa thành công");
             }
@@ -77,9 +77,8 @@ namespace Sell_Laptop_API.Controllers
         [HttpGet("id")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var cpu = await _dbContext.Cpus.FindAsync(id);
-            return Ok(cpu);
+            var cardVGA = await _dbContext.CardVGAs.FindAsync(id);
+            return Ok(cardVGA);
         }
-
     }
 }

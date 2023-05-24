@@ -1,6 +1,6 @@
 ﻿using Data.Models;
-using Data.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Sell_Laptop_API.Controllers
 {
@@ -8,54 +8,88 @@ namespace Sell_Laptop_API.Controllers
     [ApiController]
     public class RamController : ControllerBase
     {
-        private readonly IRamServices _ramServices;
-        public RamController(IRamServices ramServices)
+        private readonly ApplicationDbContext _dbContext;
+        public RamController()
         {
-            //_dbContext = new ApplicationDbContext();
-            _ramServices = ramServices;
+            _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
-        public ActionResult<IEnumerable<Ram>> GetRam()
+        public async Task<ActionResult> GetAll()
         {
-            if (_ramServices == null)
-            {
-                return NotFound();
-            }
-            return _ramServices.GetAllRams();
+            return Ok(await _dbContext.Rams.ToListAsync());
         }
         [HttpPost]
-        public ActionResult CreateRam(Ram r)
+        public async Task<ActionResult> Create(Ram ram)
         {
-            Ram rams = new Ram();
-            rams.Id = Guid.NewGuid();
-            rams.Ma = r.Ma;
-            rams.ThongSo = r.ThongSo;
-            rams.SoKheCam = r.SoKheCam;
-            rams.MoTa = r.MoTa;
-            if (_ramServices.CreateRam(rams))
+            try
             {
+                await _dbContext.Rams.AddAsync(ram);
+                await _dbContext.SaveChangesAsync();
                 return Ok("Thêm thành công");
             }
-            else return BadRequest("Thất bai");
+            catch (Exception)
+            {
+
+                return BadRequest("Thất bại");
+            }
 
         }
-        //[HttpPut("id")]
-        //public ActionResult UpdateRam(Ram rv)
-        //{
-        //    var r = _dbContext.Rams.Find(rv.Id);
-        //    r.ThongSo = rv.ThongSo;
-        //    r.Ma = rv.Ma;
-        //    _dbContext.Rams.Update(r);
-        //    _dbContext.SaveChanges();
-        //    return Ok("Bạn đã cập nhật thành công");
-        //}
-        [HttpDelete]
-        [Route("id")]
-        public ActionResult DeleteRam(Guid Id)
+        [HttpPut("id")]
+        public async Task<ActionResult> UpdateRam(Ram ram)
         {
-            if (_ramServices.DeleteRam(Id))
-                return Ok("Bạn đã xóa thành công");
-            else return BadRequest("Thất bái !");
+            var r = _dbContext.Rams.Find(ram.Id);
+            if (r == null)
+            {
+                return NotFound("Không tìm thấy");
+            }
+            else
+            {
+                try
+                {
+                    r.ThongSo = ram.ThongSo;
+                    r.SoKheCam = ram.SoKheCam;
+                    r.MoTa = ram.MoTa;
+                    _dbContext.Rams.Update(r);
+                    await _dbContext.SaveChangesAsync();
+                    return Ok("Bạn đã cập nhật thành công");
+                }
+                catch (Exception)
+                {
+
+                    return BadRequest("Thất bại");
+                }
+            }
+
         }
+        [HttpDelete("id")]
+        public async Task<ActionResult> DeleteRam(Guid Id)
+        {
+            var r = _dbContext.Rams.Find(Id);
+            if (r == null)
+            {
+                return NotFound("Không tìm thấy");
+            }
+            else
+            {
+                try
+                {
+                    _dbContext.Rams.Remove(r);
+                    await _dbContext.SaveChangesAsync();
+                    return Ok("Bạn đã xóa thành công");
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Thất bại");
+                }
+            }
+        }
+        [HttpGet("id")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var ram = await _dbContext.Rams.FindAsync(id);
+            return Ok(ram);
+        }
+
     }
 }
+

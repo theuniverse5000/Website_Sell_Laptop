@@ -6,32 +6,32 @@ namespace Sell_Laptop_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CpuController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        public CpuController()
+        public UserController()
         {
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _dbContext.Cpus.ToListAsync());
+            return Ok(await _dbContext.Users.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Cpu obj)
+        public async Task<IActionResult> Create(User obj)
         {
-            var listCpu = await _dbContext.Cpus.ToListAsync();
-            var t = listCpu.FirstOrDefault(x => x.Ma == obj.Ma);
+            var listUser = await _dbContext.Users.ToListAsync();
+            var t = listUser.FirstOrDefault(x => x.Username == obj.Username);
             if (t != null)
             {
-                return BadRequest("Thất bại. Mã đã tồn tại");
+                return BadRequest("Thất bại. Tài khoản đã tồn tại");
             }
             else
             {
                 try
                 {
-                    await _dbContext.Cpus.AddAsync(obj);
+                    await _dbContext.Users.AddAsync(obj);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Thành công");
                 }
@@ -43,14 +43,14 @@ namespace Sell_Laptop_API.Controllers
 
         }
         [HttpPut("id")]
-        public async Task<IActionResult> Update(Cpu obj)
+        public async Task<IActionResult> Update(User obj)
         {
             try
             {
-                var l = await _dbContext.Cpus.FindAsync(obj.Id);
-                l.Name = obj.Name;
-                l.ThongSo = obj.ThongSo;
-                _dbContext.Cpus.Update(l);
+                var l = await _dbContext.Users.FindAsync(obj.Id);
+                l.Password = obj.Password;
+                l.Status = obj.Status;
+                _dbContext.Users.Update(l);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Thành công");
             }
@@ -64,8 +64,8 @@ namespace Sell_Laptop_API.Controllers
         {
             try
             {
-                var t = await _dbContext.Cpus.FindAsync(id);
-                _dbContext.Cpus.Remove(t);
+                var t = await _dbContext.Users.FindAsync(id);
+                _dbContext.Users.Remove(t);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Bạn đã xóa thành công");
             }
@@ -77,9 +77,8 @@ namespace Sell_Laptop_API.Controllers
         [HttpGet("id")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var cpu = await _dbContext.Cpus.FindAsync(id);
-            return Ok(cpu);
+            var user = await _dbContext.Users.FindAsync(id);
+            return Ok(user);
         }
-
     }
 }

@@ -36,14 +36,14 @@ namespace Sell_Laptop_API.Controllers
                 return BadRequest("Không tồn tại");
             }
         }
-        [HttpPut]
+        [HttpPut("id")]
         public async Task<ActionResult> UpdateBillDetail(BillDetail obj)
         {
             if (obj != null)
             {
                 if (await _billDetailServices.UpdateBillDetail(obj))
                 {
-                    return Ok("Bạn update thành công");
+                    return Ok("Thành công");
                 }
                 return BadRequest("Không thành công !");
             }

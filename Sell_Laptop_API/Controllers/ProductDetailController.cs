@@ -15,14 +15,14 @@ namespace Sell_Laptop_API.Controllers
         }
         [HttpGet]
         //[Route("get-all-")]
-        public async Task<ActionResult> GetAllProductDetails()
+        public async Task<IActionResult> GetAllProductDetails()
         {
             var listProductDetail = await _productDetailServices.GetAllProductDetailsPhunData();
             return Ok(listProductDetail);
 
         }
         [HttpPost]
-        public async Task<ActionResult> CreateProductDetail(ProductDetail obj)
+        public async Task<IActionResult> CreateProductDetail(ProductDetail obj)
         {
             if (obj != null)
             {
@@ -41,8 +41,8 @@ namespace Sell_Laptop_API.Controllers
                 return BadRequest("Không tồn tại");
             }
         }
-        [HttpPut]
-        public async Task<ActionResult> UpdateProductDetail(ProductDetail obj)
+        [HttpPut("id")]
+        public async Task<IActionResult> UpdateProductDetail(ProductDetail obj)
         {
             if (obj != null)
             {
@@ -58,7 +58,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpDelete("id")]
-        public async Task<ActionResult> DeleteProductDetail(Guid id)
+        public async Task<IActionResult> DeleteProductDetail(Guid id)
         {
             if (await _productDetailServices.DeleteProductDetail(id))
             {
@@ -70,7 +70,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<ActionResult> GetProductDetailById(Guid id)
+        public async Task<IActionResult> GetProductDetailById(Guid id)
         {
             var productDetail = await _productDetailServices.GetProductDetailById(id);
             return Ok(productDetail);

@@ -36,16 +36,16 @@ namespace Sell_Laptop_API.Controllers
                 return BadRequest("Hóa đơn không tồn tại");
             }
         }
-        [HttpPut]
+        [HttpPut("id")]
         public async Task<ActionResult> UpdateBill(Bill obj)
         {
             if (obj != null)
             {
                 if (await _billServices.UpdateBill(obj))
                 {
-                    return Ok("Bạn thêm thành công");
+                    return Ok("Thành công");
                 }
-                return BadRequest("Không thành công !");
+                return BadRequest("Không thành công!");
             }
             else
             {

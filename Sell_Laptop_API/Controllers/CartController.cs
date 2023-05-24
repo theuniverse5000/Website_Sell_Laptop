@@ -9,11 +9,9 @@ namespace Sell_Laptop_API.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartServices _cartServices;
-        private readonly IProductDetailServices _productDetailServices;
-        public CartController(ICartServices cartServices, IProductDetailServices productDetailServices)
+        public CartController(ICartServices cartServices)
         {
             _cartServices = cartServices;
-            _productDetailServices = productDetailServices;
         }
         [HttpGet]
         public async Task<ActionResult> GetAllCarts()
@@ -38,14 +36,14 @@ namespace Sell_Laptop_API.Controllers
                 return BadRequest("Không tồn tại");
             }
         }
-        [HttpPut]
+        [HttpPut("id")]
         public async Task<ActionResult> UpdateCart(Cart obj)
         {
             if (obj != null)
             {
                 if (await _cartServices.UpdateCart(obj))
                 {
-                    return Ok("Bạn update thành công");
+                    return Ok("Thành công");
                 }
                 return BadRequest("Không thành công !");
             }
