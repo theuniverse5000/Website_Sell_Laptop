@@ -1,0 +1,58 @@
+﻿@using Data.Models.ViewModels;
+
+
+<h1>[Mới 100%]@Model.NameProduct (@Model.NameCpu, @Model.ThongSoRam)</h1>
+<div class="col-md-3">
+    <div class="thumbnail">
+        <div class="caption">
+
+            <a style="color: red;">
+                Deal:$@Model.Price
+                <p>Mã sản phẩm : @Model.Ma</p>
+                <p>Tên sản phẩm : @Model.NameProduct</p>
+                <p>Màu sắc : @Model.NameColor</p>
+                <p>Nhà sản xuất : @Model.NameManufacturer</p>
+                <p> Tình trạng: @Model.Status</p>
+                <p> Bảo hành: 12 tháng LaptopAZ</p>
+                <p class="">Thông số kỹ thuật Laptop @Model.NameProduct</p>
+                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50"
+                     aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar" style="width: 50%"></div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Số thứ tự</th>
+                            <th scope="col">Thuộc tính</th>
+                            <th scope="col">Giá trị</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="table-danger">
+                            <th scope="row">1</th>
+                            <td>CPU</td>
+                            <td>@Model.NameCpu</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <th scope="row">2</th>
+                            <td>RAM</td>
+                            <td>@Model.ThongSoRam</td>
+                        </tr>
+                        <tr class="table-danger">
+                            <th scope="row">3</th>
+                            <td>Ổ cứng</td>
+                            <td> @Model.Id</td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    <p></p>
+    <a asp-controller="Cart" asp-action="AddCart" asp-route-id="@Model.Id" class="btn btn-outline-success">Mua ngay</a>
+
+</div>
+

@@ -1,8 +1,47 @@
-﻿@{
+﻿@using Data.Models.ViewModels;
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2>Top sản phẩm bán chạy <span class="badge badge-secondary chumaudo">Hot</span></h2>
+
+<div class="row">
+    @foreach (var t in (List<ProductDetailView>)ViewBag.listProductDetailIndex)
+    {
+        <div class="col-md-3">
+
+            <div class="thumbnail">
+                <p>
+                    <div class="caption">
+                        <center>
+                            <a asp-controller="Home" asp-action="ShowChiTietSanPham" asp-route-id="@t.Id">[Mới 100%]@t.NameProduct (@t.NameCpu, @t.ThongSoRam,@t.ThongSoHardDrive)  </a><br>
+                            <strong><a style="color: red;"> $@t.Price </a></strong>
+                            @*  <del><a style="color:dimgray;">{{t.oldPrice}}đ</a></del>*@
+                        </center>
+                    </div>
+                </p>
+            </div>
+
+        </div>
+    }
+</div>
+<h2>Sản phẩm mới nhất <span class="badge badge-secondary chumaudo">New</span></h2>
+<div class="row">
+    @foreach (var t in (List<ProductDetailView>)ViewBag.listProductDetailIndex)
+    {
+        <div class="col-md-3">
+
+            <div class="thumbnail">
+                <p>
+                    <div class="caption">
+                        <center>
+                            <a asp-controller="Home" asp-action="ShowChiTietSanPham" asp-route-id="@t.Id">[Mới 100%]@t.NameProduct (@t.NameCpu, @t.ThongSoRam,@t.ThongSoHardDrive)  </a>
+                            @*  <del><a style="color:dimgray;">{{t.oldPrice}}đ</a></del>*@
+                        </center>
+                    </div>
+                </p>
+            </div>
+
+        </div>
+    }
 </div>

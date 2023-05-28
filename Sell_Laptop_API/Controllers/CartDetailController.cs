@@ -9,51 +9,72 @@ namespace Sell_Laptop_API.Controllers
     public class CartDetailController : ControllerBase
     {
         private readonly ICartDetailServices _cartDetailServices;
-        public CartDetailController(ICartDetailServices cartDetailServices)
+        private readonly IProductDetailServices _productDetailServices;
+
+        public CartDetailController(ICartDetailServices cartDetailServices, IProductDetailServices productDetailServices)
         {
             _cartDetailServices = cartDetailServices;
+            _productDetailServices = productDetailServices;
         }
+
         [HttpGet]
-        public async Task<ActionResult> GetAllCartDetails()
+        public async Task<IActionResult> GetAllCartDetails()
+        {
+            var listCartDetail = await _cartDetailServices.GetCartDetailJoinProductDetail();
+            return Ok(listCartDetail);
+
+        }
+        [Route("GetCartDetailNoJoin")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCartDetailNoJoin()
         {
             var listCartDetail = await _cartDetailServices.GetAllCartDetails();
             return Ok(listCartDetail);
 
         }
         [HttpPost]
-        public async Task<ActionResult> CreateCartDetail(CartDetail obj)
+        public async Task<IActionResult> CreateCartDetail(CartDetail obj)
         {
-            if (obj != null)
+            var listCartDetail = await _cartDetailServices.GetAllCartDetails();
+            var th = listCartDetail.FirstOrDefault(x => x.UserId == obj.UserId && x.IdProductDetails == obj.IdProductDetails);
+            var productDetailx = _productDetailServices.GetProductDetailById(obj.IdProductDetails);
+            if (productDetailx.Result.AvailableQuantity <= 0 || productDetailx.Result.AvailableQuantity < obj.Quantity)
             {
-                if (await _cartDetailServices.CreateCartDetail(obj))
-                {
-                    return Ok("Bạn thêm thành công");
-                }
-                return BadRequest("Không thành công !");
+                return BadRequest("Số lượng sản phẩm không đủ");
             }
-            else
+            if (th != null)
             {
-                return BadRequest("Không tồn tại");
+                CartDetail oo = new CartDetail();
+                oo.Id = th.Id;
+                oo.Quantity = (th.Quantity + obj.Quantity);
+                await _cartDetailServices.UpdateCartDetail(oo);
+                return Ok("Sản phẩm đã tồn tại. Số lượng vừa được cập nhât");
             }
+
+            if (await _cartDetailServices.CreateCartDetail(obj))
+            {
+                return Ok("Bạn thêm thành công");
+            }
+            return BadRequest("Không thành công !");
+
         }
-        [HttpPut("id")]
-        public async Task<ActionResult> UpdateCartDetail(CartDetail obj)
+
+        [Route("UpdateQuantity")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateCartDetail(CartDetail obj)
         {
-            if (obj != null)
+            if (await _cartDetailServices.UpdateCartDetail(obj))
             {
-                if (await _cartDetailServices.UpdateCartDetail(obj))
-                {
-                    return Ok("Thành công");
-                }
-                return BadRequest("Không thành công !");
+                return Ok("Thành công");
             }
             else
             {
-                return BadRequest("Không tồn tại");
+                return BadRequest("Không thành công !");
             }
+
         }
         [HttpDelete("id")]
-        public async Task<ActionResult> DeleteCartDetail(Guid id)
+        public async Task<IActionResult> DeleteCartDetail(Guid id)
         {
             if (await _cartDetailServices.DeleteCartDetail(id))
             {
@@ -65,7 +86,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<ActionResult> GetCartDetailById(Guid id)
+        public async Task<IActionResult> GetCartDetailById(Guid id)
         {
             var cartDetail = await _cartDetailServices.GetCartDetailById(id);
             return Ok(cartDetail);

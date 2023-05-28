@@ -1,0 +1,311 @@
+﻿
+@*@model IEnumerable<Data.Models.ViewModels.CartDetailView>*@
+@using System.Globalization;
+@using Data.Models.ViewModels;
+@{
+    var ThongBaoHanhDong = TempData["ThongBaoHanhDong"] as string;
+    decimal TongTien = 0;
+    var listItems = (List<CartDetailView>)ViewBag.itemsInCart;
+
+}
+<p></p>
+<h5 class="mb-3">
+    <a href="~/Home/Index" class="btn btn-outline-danger">
+        <i class="fas fa-long-arrow-alt-left me-2"></i> Tiếp tục mua hàng
+    </a>
+</h5>
+<hr>
+
+@if(listItems.Count > 0)
+{
+    <div class="alert alert-dismissible alert-warning">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <h4 class="alert-heading">Cảnh báo: Bạn có @listItems.Count sản phẩm trong giỏ hàng</h4>
+    </div>
+}
+@if (ThongBaoHanhDong != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Thông báo :</strong>@ThongBaoHanhDong <a href="#" class="alert-link"></a>.
+    </div>
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Sản phẩm</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Hành động</th>
+            <th scope="col">Tổng tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in listItems)
+        {
+
+            decimal TongTienOneProduct = @i.Price * @i.Quantity;
+            @TongTien += TongTienOneProduct;
+            <tr class="table-secondary">
+                <th scope="row">
+                    @i.NameProduct ( @i.NameCpu - @i.ThongSoCpu,
+                    @i.ThongSoRam - Số khe cắm:@i.SoKheCamRam, @i.ThongSoHardDrive - @i.MoTaHardDrive,
+                    @i.TenCardVGA - @i.ThongSoCardVGA, @i.KichCoManHinh, @i.TanSoManHinh, @i.ChatLieuManHinh)
+                </th>
+                <td>@i.Price.ToString("N0", CultureInfo.CreateSpecificCulture("vi-VN"))</td>
+                <td>@i.Quantity</td>
+
+                <td>
+                    <a class="btn btn-outline-success" asp-action="CongOneQuantity" asp-route-id="@i.Id">+</a>
+                    <a class="btn btn-outline-warning" asp-action="TruOneQuantity" asp-route-id="@i.Id">-</a>
+                    <a class="btn btn-outline-danger" asp-action="DeleteItemInCart" asp-route-id="@i.Id">Xóa</a>
+                </td>
+                <td>@TongTienOneProduct</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-md-3">
+        <strong>1. Thông tin khách hàng</strong>
+        <form action="~/Bill/CreateBill" enctype="multipart/form-data" method="post">
+            <div class="mb-3">
+                <label class="form-label">Họ tên</label>
+                <input type="text" class="form-control" name="hoTenKhachHang">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Điện thoại</label>
+                <input type="text" class="form-control" name="sdtKhachHang">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" name="diaChiKhachHang">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Mã giảm giá</label>
+                <input type="text" class="form-control" name="maVoucher">
+            </div>
+            <button class="btn btn-warning btn-lg" type="submit"> Đặt hàng</button>
+        </form>
+    </div>
+    <div class="col-md-5">
+        <div class="mb-4">
+            <div class="form-group">
+                <label for="comment">
+                    <strong>2. Ghi chú</strong>
+                </label>
+                <textarea class="form-control" rows="5" id="ghi chú "></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <strong>3. Phương thức thanh toán </strong>
+        <fieldset class="form-group">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                <label class="form-check-label" for="optionsRadios1">
+                    Thanh toán tại cửa hàng
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                <label class="form-check-label" for="optionsRadios2">
+                    Thanh toán khi nhận hàng (COD)
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                <label class="form-check-label" for="optionsRadios2">
+                    Thanh toán bằng chuyển khoản ngân hàng
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                <label class="form-check-label" for="optionsRadios2">
+                    Thanh toán trả góp
+                </label>
+            </div>
+        </fieldset>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-xl-3">
+            <div class="d-flex justify-content-between" style="font-weight: 500;">
+                <p class="mb-2">Tổng tiền</p>
+                <p class="mb-2">$@TongTien.ToString("N0", CultureInfo.CreateSpecificCulture("vi-VN"))</p>
+            </div>
+
+            <div class="d-flex justify-content-between" style="font-weight: 500;">
+                <p class="mb-0">Phí ship</p>
+                <p class="mb-0">$0</p>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                <p class="mb-2">Tổng</p>
+                <p class="mb-2">$@TongTien.ToString("N0", CultureInfo.CreateSpecificCulture("vi-VN"))</p>
+            </div>
+
+            <button type="button" class="btn btn-lg btn-primary btn-block btn-lg">
+                <div class="d-flex justify-content-between">
+                    <span>Thanh toán</span>
+                    <span></span>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+@*<section class="h-100 h-custom" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col">
+        <div class="card">
+          <div class="card-body p-4">
+
+            <div class="row">
+
+              <div class="col-lg-7">
+                <h5 class="mb-3"><a href="#!" class="text-body"><i
+                      class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
+                <hr>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div>
+                    <p class="mb-1">Shopping cart</p>
+                    <p class="mb-0">You have 4 items in your cart</p>
+                  </div>
+                  <div>
+                    <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!"
+                        class="text-body">price <i class="fas fa-angle-down mt-1"></i></a></p>
+                  </div>
+                </div>
+
+                 @foreach (var i in (List<CartDetailView>)ViewBag.itemsInCart)
+        {
+
+                <div class="card mb-3 mb-lg-0">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div class="d-flex flex-row align-items-center">
+                        <div>
+                          <img
+                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img4.webp"
+                            class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
+                        </div>
+                        <div class="ms-3">
+                          <h5>MacBook Pro</h5>
+                          <p class="small mb-0">1TB, Graphite</p>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row align-items-center">
+                        <div style="width: 50px;">
+                          <h5 class="fw-normal mb-0">1</h5>
+                        </div>
+                        <div style="width: 80px;">
+                          <h5 class="mb-0">$1799</h5>
+                        </div>
+                        <a href="#!" style="color: #cecece;"><i class="fas fa-trash-alt"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        }
+              </div>
+              <div class="col-lg-5">
+
+                <div class="card bg-primary text-white rounded-3">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                      <h5 class="mb-0">Card details</h5>
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                        class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">
+                    </div>
+
+                    <p class="small mb-2">Card type</p>
+                    <a href="#!" type="submit" class="text-white"><i
+                        class="fab fa-cc-mastercard fa-2x me-2"></i></a>
+                    <a href="#!" type="submit" class="text-white"><i
+                        class="fab fa-cc-visa fa-2x me-2"></i></a>
+                    <a href="#!" type="submit" class="text-white"><i
+                        class="fab fa-cc-amex fa-2x me-2"></i></a>
+                    <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
+
+                    <form class="mt-4">
+                      <div class="form-outline form-white mb-4">
+                        <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
+                          placeholder="Cardholder's Name" />
+                        <label class="form-label" for="typeName">Cardholder's Name</label>
+                      </div>
+
+                      <div class="form-outline form-white mb-4">
+                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+                          placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
+                        <label class="form-label" for="typeText">Card Number</label>
+                      </div>
+
+                      <div class="row mb-4">
+                        <div class="col-md-6">
+                          <div class="form-outline form-white">
+                            <input type="text" id="typeExp" class="form-control form-control-lg"
+                              placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
+                            <label class="form-label" for="typeExp">Expiration</label>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-outline form-white">
+                            <input type="password" id="typeText" class="form-control form-control-lg"
+                              placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
+                            <label class="form-label" for="typeText">Cvv</label>
+                          </div>
+                        </div>
+                      </div>
+
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-2">Subtotal</p>
+                      <p class="mb-2">$4798.00</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-2">Shipping</p>
+                      <p class="mb-2">$20.00</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-4">
+                      <p class="mb-2">Total(Incl. taxes)</p>
+                      <p class="mb-2">$4818.00</p>
+                    </div>
+
+                    <button type="button" class="btn btn-info btn-block btn-lg">
+                      <div class="d-flex justify-content-between">
+                        <span>$4818.00</span>
+                        <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                      </div>
+                    </button>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>*@

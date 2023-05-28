@@ -157,7 +157,7 @@ namespace Sell_Laptop_Web.Controllers
                 client.BaseAddress = new Uri("https://localhost:44346/api/ProductDetail");
 
                 //HTTP POST
-                var putTask = client.PutAsJsonAsync<ProductDetail>("ProductDetail", productDetail);
+                var putTask = client.PutAsJsonAsync<ProductDetail>(client.BaseAddress, productDetail);
                 putTask.Wait();
 
                 var result = putTask.Result;

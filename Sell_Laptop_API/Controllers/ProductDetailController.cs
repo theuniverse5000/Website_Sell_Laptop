@@ -41,7 +41,7 @@ namespace Sell_Laptop_API.Controllers
                 return BadRequest("Không tồn tại");
             }
         }
-        [HttpPut("id")]
+        [HttpPut]
         public async Task<IActionResult> UpdateProductDetail(ProductDetail obj)
         {
             if (obj != null)
@@ -72,7 +72,8 @@ namespace Sell_Laptop_API.Controllers
         [HttpGet("id")]
         public async Task<IActionResult> GetProductDetailById(Guid id)
         {
-            var productDetail = await _productDetailServices.GetProductDetailById(id);
+            var listProductDetail = await _productDetailServices.GetAllProductDetailsPhunData();
+            var productDetail = listProductDetail.FirstOrDefault(x => x.Id == id);
             return Ok(productDetail);
         }
     }
