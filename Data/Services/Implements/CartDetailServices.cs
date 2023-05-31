@@ -82,6 +82,7 @@ namespace Data.Services.Implements
                      Id = y.Id,
                      Quantity = y.Quantity,
                      UserId = y.UserId,
+                     IdProductDetails = a.Id,
                      MaProductDetai = a.Ma,
                      ImportPrice = a.ImportPrice,
                      Price = a.Price,
