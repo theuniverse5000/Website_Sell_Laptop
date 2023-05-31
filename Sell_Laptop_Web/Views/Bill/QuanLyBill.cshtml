@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Data.Models.Bill>
+@using Data.Models;
+@{
+    ViewData["Title"] = "QuanLyBill";
+}
+<p></p>
+<div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+</div>
+ <table class="table table-hover">
+  <thead>
+    <tr>
+
+      <th scope="col">Mã hóa đơn</th>
+       <th scope="col">Ngày tạo</th>
+      <th scope="col">Họ tên khách hàng</th>
+      <th scope="col">Địa chỉ khách hàng</th>
+      <th scope="col">Số điện thoại khách hàng</th>
+      <th scope="col">Trạng thái</th>
+   
+      <th scope="col">Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+        @foreach(var t in (List<Bill>)ViewBag.listBill)
+        {
+       <tr class="table-danger">
+      <th scope="row">@t.Ma</th>
+       <td>@t.CreateDate</td>
+      <td>@t.HoTenKhachHang</td>
+      <td>@t.DiaChiKhachHang</td>
+      <td>@t.SdtKhachHang</td>
+                    @if (@t.Status == 1)
+                    {
+                        <td>Đã thanh toán</td>
+                    }
+                    else if (@t.Status == 0)
+                    {
+                        <td>Chưa thanh toán</td>
+                    }
+                    else
+                    {
+                         <td>Chưa xác định</td>
+                    }
+                    <td>
+                       <a class="btn btn-outline-success"@Html.ActionLink("Chi tiết", "ShowBillDetail", new { maBill = t.Ma })></a>
+                       <a class="btn btn-outline-success" @Html.ActionLink("Xác nhận đã thanh toán",
+                        "PayBill", 
+                        "Bill",  
+                        new {maBill = t.Ma})>
+                    </a></td>
+    </tr> 
+        }
+  </tbody>
+</table>
+@*
+ @foreach(var t in (List<Bill>)ViewBag.ListBill)
+        {
+            <form action="~/Bill/PayBill" enctype="multipart/form-data" method="post"  >
+             
+      <input value="@t.Ma" class="form-control-plaintext" name="maBill"readonly="">
+     
+                    <button class="btn btn-outline-success" type="submit"> Pay </button>
+      
+     </form>  
+        }*@
+     
