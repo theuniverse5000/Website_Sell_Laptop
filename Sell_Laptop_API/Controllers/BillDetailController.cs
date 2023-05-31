@@ -32,7 +32,7 @@ namespace Sell_Laptop_API.Controllers
             var productDetailx = _productDetailServices.GetProductDetailById(obj.IdProductDetails);
             if (productDetailx.Result.AvailableQuantity <= 0 || productDetailx.Result.AvailableQuantity < obj.Quantity)
             {
-                return BadRequest("Số lượng sản phẩm không đủ");
+                return NotFound("Số lượng sản phẩm không đủ");
             }
             if (th != null)
             {
