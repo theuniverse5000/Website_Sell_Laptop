@@ -13,6 +13,7 @@
         public int Status { get; set; }
         public Guid IdBillDetail { get; set; }
         public Guid IdProductDetails { get; set; }
+        public string MaProductDetail { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public string ThongSoRam { get; set; }

@@ -17,7 +17,7 @@ namespace Data.Configurations
             builder.Property(p => p.SdtKhachHang).HasColumnName("SoDienThoaiKhachHang").HasColumnType("nvarchar(100)");
             builder.Property(p => p.Status).HasColumnType("int").
                 IsRequired(); // int not null
-            builder.HasOne(p => p.Voucher).WithMany(p => p.Bills).HasForeignKey(p => p.VoucherId);
+            builder.HasOne(p => p.Voucher).WithMany(p => p.Bills).HasForeignKey(p => p.VoucherId).IsRequired(false);
             builder.HasOne(p => p.User).WithMany(p => p.Bills).HasForeignKey(p => p.UserId);
         }
     }

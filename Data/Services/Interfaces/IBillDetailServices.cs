@@ -1,4 +1,5 @@
 ﻿using Data.Models;
+using Data.Models.ViewModels;
 
 namespace Data.Services.Interfaces
 {
@@ -9,5 +10,7 @@ namespace Data.Services.Interfaces
         Task<bool> DeleteBillDetail(Guid id);
         Task<List<BillDetail>> GetAllBillDetails();
         Task<BillDetail> GetBillDetailById(Guid id);
+        Task<List<BillView>> GetBillDetailJoinFull();
+
     }
 }

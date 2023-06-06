@@ -1,4 +1,5 @@
 ﻿using Data.Models;
+using Data.Models.ViewModels;
 using Data.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +61,35 @@ namespace Data.Services.Implements
         public async Task<BillDetail> GetBillDetailById(Guid id)
         {
             return await _dbContext.BillDetails.FindAsync(id);
+        }
+
+        public async Task<List<BillView>> GetBillDetailJoinFull()
+        {
+            List<BillView> listBill = new List<BillView>();
+            listBill = (
+                 from a in await _dbContext.Bills.ToListAsync()
+                 join b in await _dbContext.BillDetails.ToListAsync() on a.Id equals b.IdBill
+                 join c in await _dbContext.ProductDetails.ToListAsync() on b.IdProductDetails equals c.Id
+                 join d in await _dbContext.Vouchers.ToListAsync() on a.VoucherId equals d.ID
+                 select new BillView
+                 {
+
+                     IdBill = a.Id,
+                     MaBill = a.Ma,
+                     UserId = a.UserId,
+                     CreateDate = a.CreateDate,
+                     SdtKhachHang = a.SdtKhachHang,
+                     HoTenKhachHang = a.HoTenKhachHang,
+                     DiaChiKhachHang = a.DiaChiKhachHang,
+                     IdBillDetail = b.Id,
+                     MaProductDetail = c.Ma,
+                     Price = b.Price,
+                     Quantity = b.Quantity,
+                     MaVoucher = d.Ma,
+                     GiaTriVoucher = d.GiaTri
+                 }
+                 ).ToList();
+            return listBill;
         }
 
         public async Task<bool> UpdateBillDetail(BillDetail obj)

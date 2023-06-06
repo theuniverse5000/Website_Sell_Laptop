@@ -110,7 +110,7 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Ma = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ma = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Ten = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     KichCo = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     TanSo = table.Column<string>(type: "nvarchar(20)", nullable: false),
@@ -259,7 +259,7 @@ namespace Data.Migrations
                     HoTenKhachHang = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     DiaChiKhachHang = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VoucherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VoucherId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -275,8 +275,7 @@ namespace Data.Migrations
                         name: "FK_Bill_Voucher_VoucherId",
                         column: x => x.VoucherId,
                         principalTable: "Voucher",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(

@@ -51,9 +51,27 @@ namespace Data.Services.Implements
             }
         }
 
-        public Task<List<BillView>> GetAllBillJoinFull()
+        public async Task<List<BillView>> GetAllBillJoinFull()
         {
-            throw new NotImplementedException();
+            List<BillView> listBill = new List<BillView>();
+            listBill = (
+                 from a in await _dbContext.Bills.ToListAsync()
+                 join b in await _dbContext.BillDetails.ToListAsync() on a.Id equals b.IdBill
+                 join c in await _dbContext.ProductDetails.ToListAsync() on b.IdProductDetails equals c.Id
+                 join d in await _dbContext.Vouchers.ToListAsync() on a.VoucherId equals d.ID
+                 select new BillView
+                 {
+                     IdBill = a.Id,
+                     MaBill = a.Ma,
+                     UserId = a.UserId,
+                     CreateDate = a.CreateDate,
+                     SdtKhachHang = a.SdtKhachHang,
+                     HoTenKhachHang = a.HoTenKhachHang,
+                     DiaChiKhachHang = a.DiaChiKhachHang,
+                 }
+                 ).ToList();
+
+            return listBill;
         }
 
         public async Task<List<Bill>> GetAllBills()
@@ -101,37 +119,7 @@ namespace Data.Services.Implements
                 return false;
             }
         }
-        //    public bool CreateBill(Bill thao)
-        //    {
-        //        try
-        //        {
-        //            _dbContext.Bills.Add(thao);
-        //            _dbContext.SaveChanges();
-        //            return true;
-        //        }
-        //        catch (Exception)
-        //        {
 
-        //            return false;
-        //        }
-
-        //    }
-
-        //    public bool DeleteBill(Guid id)
-        //    {
-        //        try
-        //        {
-        //            var thao = _dbContext.Bills.Find(id);
-        //            _dbContext.Bills.Remove(thao);
-        //            _dbContext.SaveChanges();
-        //            return true;
-        //        }
-        //        catch (Exception)
-        //        {
-
-        //            return false;
-        //        }
-        //    }
 
         //    public List<BillView> GetAllBillJoinFull()
         //    {
@@ -166,34 +154,9 @@ namespace Data.Services.Implements
         //        return bills;
         //    }
 
-        //    public List<Bill> GetAllBills()
-        //    {
-        //        return _dbContext.Bills.ToList();
-        //    }
-
         //    public Bill GetBillById(Guid id)
         //    {
         //        return _dbContext.Bills.Find(id);
-        //    }
-
-        //    public bool UpdateBill(Bill thao)
-        //    {
-        //        try
-        //        {
-        //            var linh = _dbContext.Bills.Find(thao.Id);
-        //            linh.HoTenKhachHang = thao.HoTenKhachHang;
-        //            linh.DiaChiKhachHang = thao.DiaChiKhachHang;
-        //            linh.SdtKhachHang = thao.SdtKhachHang;
-        //            linh.Status = thao.Status;
-        //            _dbContext.Bills.Update(linh);
-        //            _dbContext.SaveChanges();
-        //            return true;
-        //        }
-        //        catch (Exception)
-        //        {
-
-        //            return false;
-        //        }
         //    }
 
         //    public bool UpdateStatusBill(Guid Id)

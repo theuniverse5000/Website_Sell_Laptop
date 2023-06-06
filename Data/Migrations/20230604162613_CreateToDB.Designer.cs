@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230531095534_CreateToDB")]
+    [Migration("20230604162613_CreateToDB")]
     partial class CreateToDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("VoucherId")
+                    b.Property<Guid?>("VoucherId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -417,7 +417,8 @@ namespace Data.Migrations
 
                     b.Property<string>("Ma")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("TanSo")
                         .IsRequired()
@@ -519,9 +520,7 @@ namespace Data.Migrations
 
                     b.HasOne("Data.Models.Voucher", "Voucher")
                         .WithMany("Bills")
-                        .HasForeignKey("VoucherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VoucherId");
 
                     b.Navigation("User");
 
