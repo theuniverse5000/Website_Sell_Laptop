@@ -14,12 +14,12 @@ namespace Sell_Laptop_API.Controllers
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllCardVGAs()
         {
             return Ok(await _dbContext.CardVGAs.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CardVGA obj)
+        public async Task<IActionResult> CreateCardVGA(CardVGA obj)
         {
             var listCardVGA = await _dbContext.CardVGAs.ToListAsync();
             var t = listCardVGA.FirstOrDefault(x => x.Ma == obj.Ma);
@@ -31,6 +31,7 @@ namespace Sell_Laptop_API.Controllers
             {
                 try
                 {
+                    obj.Id = Guid.NewGuid();
                     await _dbContext.CardVGAs.AddAsync(obj);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Thành công");
@@ -42,8 +43,8 @@ namespace Sell_Laptop_API.Controllers
             }
 
         }
-        [HttpPut("id")]
-        public async Task<IActionResult> Update(CardVGA obj)
+        [HttpPut]
+        public async Task<IActionResult> UpdateCardVGA(CardVGA obj)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpDelete("id")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteCardVGA(Guid id)
         {
             try
             {
@@ -75,7 +76,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetCardVGAById(Guid id)
         {
             var cardVGA = await _dbContext.CardVGAs.FindAsync(id);
             return Ok(cardVGA);
