@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Data.Models.Color>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Quản lý màu sắc</h1>
+
+<p>
+    <a class="btn btn-outline-success" asp-action="Create">Thêm</a>
+</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Mã màu sắc</th>
+            <th scope="col">Tên màu sắc</th>
+            <th scope="col">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in Model)
+        {
+            <tr class="table-primary">
+                <th scope="row">@t.Ma</th>
+                <td>@t.Name</td>
+                <td>
+                    <a class="btn btn-outline-warning" asp-action="Update" asp-route-id="@t.Id">Cập nhật</a> |
+                    <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@t.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

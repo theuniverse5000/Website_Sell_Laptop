@@ -14,12 +14,12 @@ namespace Sell_Laptop_API.Controllers
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllColors()
         {
             return Ok(await _dbContext.Colors.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Color obj)
+        public async Task<IActionResult> CreateColor(Color obj)
         {
             var listColor = await _dbContext.Colors.ToListAsync();
             var t = listColor.FirstOrDefault(x => x.Ma == obj.Ma);
@@ -42,8 +42,8 @@ namespace Sell_Laptop_API.Controllers
             }
 
         }
-        [HttpPut("id")]
-        public async Task<IActionResult> Update(Color obj)
+        [HttpPut]
+        public async Task<IActionResult> UpdateColor(Color obj)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpDelete("id")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteColor(Guid id)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetColorById(Guid id)
         {
             var Color = await _dbContext.Colors.FindAsync(id);
             return Ok(Color);
