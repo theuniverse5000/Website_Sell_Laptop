@@ -14,12 +14,12 @@ namespace Sell_Laptop_API.Controllers
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllCpu()
         {
             return Ok(await _dbContext.Cpus.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Cpu obj)
+        public async Task<IActionResult> CreateCpu(Cpu obj)
         {
             var listCpu = await _dbContext.Cpus.ToListAsync();
             var t = listCpu.FirstOrDefault(x => x.Ma == obj.Ma);
@@ -31,6 +31,7 @@ namespace Sell_Laptop_API.Controllers
             {
                 try
                 {
+                    obj.Id = Guid.NewGuid();
                     await _dbContext.Cpus.AddAsync(obj);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Thành công");
@@ -42,15 +43,15 @@ namespace Sell_Laptop_API.Controllers
             }
 
         }
-        [HttpPut("id")]
-        public async Task<IActionResult> Update(Cpu obj)
+        [HttpPut]
+        public async Task<IActionResult> UpdateCpu(Cpu obj)
         {
             try
             {
-                var l = await _dbContext.Cpus.FindAsync(obj.Id);
-                l.Name = obj.Name;
-                l.ThongSo = obj.ThongSo;
-                _dbContext.Cpus.Update(l);
+                var t = await _dbContext.Cpus.FindAsync(obj.Id);
+                t.Name = obj.Name;
+                t.ThongSo = obj.ThongSo;
+                _dbContext.Cpus.Update(t);
                 await _dbContext.SaveChangesAsync();
                 return Ok("Thành công");
             }
@@ -60,7 +61,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpDelete("id")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteCpu(Guid id)
         {
             try
             {
@@ -80,6 +81,5 @@ namespace Sell_Laptop_API.Controllers
             var cpu = await _dbContext.Cpus.FindAsync(id);
             return Ok(cpu);
         }
-
     }
 }

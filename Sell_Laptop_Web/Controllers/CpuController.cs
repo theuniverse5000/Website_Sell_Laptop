@@ -8,11 +8,11 @@ namespace Sell_Laptop_Web.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            string apiUrl = "https://localhost:44346/api/Cpu";// lấy url
-            // sau khi có url lấy dữ liệu trả về từ nó
-            var httpClient = new HttpClient(); // tạo 1 http client để call api
-            var reponse = await httpClient.GetAsync(apiUrl);// lấy kết quả từ url
-            string apiData = await reponse.Content.ReadAsStringAsync();// Đọc ra string json
+
+            string apiUrl = "https://localhost:44346/api/Cpu";
+            var httpClient = new HttpClient();
+            var reponse = await httpClient.GetAsync(apiUrl);
+            string apiData = await reponse.Content.ReadAsStringAsync();
             var list = JsonConvert.DeserializeObject<List<Cpu>>(apiData);
             return View(list);
         }
@@ -23,21 +23,50 @@ namespace Sell_Laptop_Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Cpu obj)
         {
-            string apiUrl = "https://localhost:44346/api/Cpu";// lấy url
-            // sau khi có url lấy dữ liệu trả về từ nó
-            var httpClient = new HttpClient(); // tạo 1 http client để call api
-            var reponse = await httpClient.PostAsJsonAsync<Cpu>(apiUrl, obj);// lấy kết quả từ url
-            string apiData = await reponse.Content.ReadAsStringAsync();// Đọc ra string json
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://localhost:44346/api/Cpu");
+            var result = client.PostAsJsonAsync<Cpu>(client.BaseAddress, obj).Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError(string.Empty, "Thêm thất bại !!!");
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(Cpu x)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://localhost:44346/api/Cpu");
+            var result = client.PutAsJsonAsync(client.BaseAddress, x).Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError(string.Empty, "Thêm thất bại !!!");
 
-            return RedirectToAction("Index");
+            return View();
         }
         public async Task<IActionResult> Delete(Guid id)
         {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"https://localhost:44346/api/Cpu/id?Id={id}");
 
-            var httpClient = new HttpClient();
-            var reponse = await httpClient.DeleteAsync($"https://localhost:44346/api/Cpu/id?id={id}");
-            var apiData = await reponse.Content.ReadAsStringAsync();
-            return RedirectToAction("Index");
+                //HTTP DELETE
+                var result = client.DeleteAsync(client.BaseAddress).Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Thất bại !!!");
+            return BadRequest();
         }
     }
 }
