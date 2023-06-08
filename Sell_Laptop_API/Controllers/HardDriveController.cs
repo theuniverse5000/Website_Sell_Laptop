@@ -14,12 +14,12 @@ namespace Sell_Laptop_API.Controllers
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllHardDrives()
         {
             return Ok(await _dbContext.HardDrives.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(HardDrive obj)
+        public async Task<IActionResult> CreateHardDrive(HardDrive obj)
         {
             var listHardDrive = await _dbContext.HardDrives.ToListAsync();
             var t = listHardDrive.FirstOrDefault(x => x.Ma == obj.Ma);
@@ -31,6 +31,7 @@ namespace Sell_Laptop_API.Controllers
             {
                 try
                 {
+                    obj.Id = Guid.NewGuid();
                     await _dbContext.HardDrives.AddAsync(obj);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Thành công");
@@ -42,8 +43,8 @@ namespace Sell_Laptop_API.Controllers
             }
 
         }
-        [HttpPut("id")]
-        public async Task<IActionResult> Update(HardDrive obj)
+        [HttpPut]
+        public async Task<IActionResult> UpdateHardDrive(HardDrive obj)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpDelete("id")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteHardDrive(Guid id)
         {
             try
             {
@@ -75,7 +76,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetHardDriveById(Guid id)
         {
             var hardDrive = await _dbContext.HardDrives.FindAsync(id);
             return Ok(hardDrive);
