@@ -14,12 +14,12 @@ namespace Sell_Laptop_API.Controllers
             _dbContext = new ApplicationDbContext();
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllImages()
         {
             return Ok(await _dbContext.Images.ToListAsync());
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Image obj)
+        public async Task<IActionResult> CreateImage(Image obj)
         {
             var listImage = await _dbContext.Images.ToListAsync();
             var t = listImage.FirstOrDefault(x => x.Ma == obj.Ma);
@@ -31,6 +31,7 @@ namespace Sell_Laptop_API.Controllers
             {
                 try
                 {
+                    obj.Id = Guid.NewGuid();
                     await _dbContext.Images.AddAsync(obj);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Thành công");
@@ -42,8 +43,8 @@ namespace Sell_Laptop_API.Controllers
             }
 
         }
-        [HttpPut("id")]
-        public async Task<IActionResult> Update(Image obj)
+        [HttpPut]
+        public async Task<IActionResult> UpdateImage(Image obj)
         {
             try
             {
@@ -59,7 +60,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpDelete("id")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteImage(Guid id)
         {
             try
             {
@@ -74,7 +75,7 @@ namespace Sell_Laptop_API.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetImageById(Guid id)
         {
             var image = await _dbContext.Images.FindAsync(id);
             return Ok(image);

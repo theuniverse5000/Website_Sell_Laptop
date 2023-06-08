@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Data.Models.Image>
+@using Data.Models.ViewModels
+@{
+    ViewData["Title"] = "Index";
+    var listProduct = (List<ProductDetailView>)ViewBag.listProductDetail;
+}
+
+<h1>Quản lý hình ảnh</h1>
+
+<p>
+    <a class="btn btn-outline-success" asp-action="Create">Thêm</a>
+</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Mã hình ảnh</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col">Sản phẩm</th>
+            <th scope="col">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in Model)
+        {
+            <tr class="table-primary">
+                <th scope="row">@t.Ma</th>
+                <td><img src="./UploadImages/@t.LinkImage"width="100" height="100"></td>
+                <td>@listProduct.FirstOrDefault(x=>x.Id==t.IdProductDetail).Ma</td>
+                <td>
+                    <a class="btn btn-outline-warning" asp-action="Update" asp-route-id="@t.Id">Cập nhật</a> |
+                    <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@t.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

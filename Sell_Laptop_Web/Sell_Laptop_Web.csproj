@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Sell_Laptop_API\Sell_Laptop_API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\UploadImages\" />
+  </ItemGroup>
+
 </Project>
