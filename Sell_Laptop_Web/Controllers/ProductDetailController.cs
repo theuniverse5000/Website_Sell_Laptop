@@ -149,7 +149,6 @@ namespace Sell_Laptop_Web.Controllers
             return Task.FromResult<IActionResult>(View(productDetail));
             //   return View();
         }
-        // [HttpPut]
         public Task<IActionResult> Update(ProductDetail productDetail)
         {
             using (var client = new HttpClient())

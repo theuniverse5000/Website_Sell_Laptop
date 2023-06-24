@@ -43,7 +43,7 @@
                          <td>Chưa xác định</td>
                     }
                     <td>
-                       <a class="btn btn-outline-success"@Html.ActionLink("Chi tiết", "ShowBillDetail", new { maBill = t.Ma })></a>
+                    <a class="btn btn-outline-success" asp-controller="Bill" asp-action="ShowBillItem" asp-route-id="@t.Id">Xem chi tiết</a>
                        <a class="btn btn-outline-success" @Html.ActionLink("Xác nhận đã thanh toán",
                         "PayBill", 
                         "Bill",  

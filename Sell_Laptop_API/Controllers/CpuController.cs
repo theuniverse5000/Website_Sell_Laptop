@@ -9,9 +9,9 @@ namespace Sell_Laptop_API.Controllers
     public class CpuController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        public CpuController()
+        public CpuController(ApplicationDbContext dbContext)
         {
-            _dbContext = new ApplicationDbContext();
+            _dbContext = dbContext;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllCpu()

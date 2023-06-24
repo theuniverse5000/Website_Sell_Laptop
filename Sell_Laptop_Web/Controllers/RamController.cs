@@ -36,19 +36,45 @@ namespace Sell_Laptop_Web.Controllers
             ViewBag.ListRam = rams;
             return View(rams);
         }
-        public IActionResult CreateRam()
+        public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult CreateRam(Ram r)
+        public IActionResult Create(Ram r)
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44346/api/RamAPI");
+                client.BaseAddress = new Uri("https://localhost:44346/api/Ram");
 
                 //HTTP POST
-                var postTask = client.PostAsJsonAsync<Ram>("Ram", r);
+                var postTask = client.PostAsJsonAsync<Ram>(client.BaseAddress, r);
+                postTask.Wait();
+
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            ModelState.AddModelError(string.Empty, "Server Error. Please contact administrator.");
+
+            return View();
+        }
+        public IActionResult Edit(Guid id)
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Edit(Ram r)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"https://localhost:44346/api/Ram");
+
+                //HTTP POST
+                var postTask = client.PutAsJsonAsync<Ram>(client.BaseAddress, r);
                 postTask.Wait();
 
                 var result = postTask.Result;
@@ -63,7 +89,7 @@ namespace Sell_Laptop_Web.Controllers
             return View();
         }
         //[HttpGet]
-        public ActionResult DeleteRam(Guid id)
+        public ActionResult Delete(Guid id)
         {
             using (var client = new HttpClient())
             {

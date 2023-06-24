@@ -1,3 +1,4 @@
+using Data.Models;
 using Data.Services.Implements;
 using Data.Services.Interfaces;
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 //    ));
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<ApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddTransient<IBillServices, BillServices>();
 builder.Services.AddTransient<IBillDetailServices, BillDetailServices>();
 builder.Services.AddTransient<ICartServices, CartServices>();

@@ -19,7 +19,7 @@ namespace Sell_Laptop_API.Controllers
             return Ok(await _dbContext.Rams.ToListAsync());
         }
         [HttpPost]
-        public async Task<ActionResult> Create(Ram ram)
+        public async Task<ActionResult> CreateRam(Ram ram)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace Sell_Laptop_API.Controllers
             }
 
         }
-        [HttpPut("id")]
+        [HttpPut]
         public async Task<ActionResult> UpdateRam(Ram ram)
         {
             var r = _dbContext.Rams.Find(ram.Id);
