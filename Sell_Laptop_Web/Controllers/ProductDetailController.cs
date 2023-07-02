@@ -2,13 +2,12 @@
 using Data.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Sell_Laptop_Web.Services;
 
 namespace Sell_Laptop_Web.Controllers
 {
     public class ProductDetailController : Controller
     {
-        CallAPIServices callAPI = new CallAPIServices();
+        private readonly HttpClient _client;
         static List<Ram> listRam;
         static List<Cpu> listCpu;
         static List<HardDrive> listHardDrive;
@@ -18,42 +17,30 @@ namespace Sell_Laptop_Web.Controllers
         static List<Color> listColor;
         public ProductDetailController()
         {
-
+            _client = new HttpClient();
         }
-        public Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<ProductDetailView> productDetails = null;
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44346/api/");
-                //HTTP GET
-                var responseTask = client.GetAsync("ProductDetail");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<IList<ProductDetailView>>();
-                    readTask.Wait();
-
-                    productDetails = readTask.Result;
-                    ViewBag.listProductDetail = productDetails;
-                }
-                else //web api sent error response 
-                {
-                    //log response status here..
-                    productDetails = Enumerable.Empty<ProductDetailView>();
-
-                    ModelState.AddModelError(string.Empty, "Có lỗi xảy ra");
-                }
-                return Task.FromResult<IActionResult>(View(productDetails));
-            }
-
-            //  return View(await callAPI.GetAll<ProductDetailView>("https://localhost:44346/api/ProductDetail"));
+            var listProductDetail = await _client.GetFromJsonAsync<IList<ProductDetailView>>("https://localhost:44346/api/ProductDetail");
+            ViewBag.listProductDetail = listProductDetail;
+            return View(listProductDetail);
         }
         public async Task<ActionResult> Create()
         {
+            //var listCpu = await _client.GetFromJsonAsync<List<Cpu>>("https://localhost:44346/api/Cpu");
+            //ViewBag.listCpu = listCpu;
+            //var listRam = await _client.GetFromJsonAsync<List<Ram>>("https://localhost:44346/api/Ram");
+            //ViewBag.listRam = listRam;
+            //var listHardDrive = await _client.GetFromJsonAsync<List<HardDrive>>("https://localhost:44346/api/HardDrive");
+            //ViewBag.listHardDrive = listHardDrive;
+            //var listScreen = await _client.GetFromJsonAsync<List<Screen>>("https://localhost:44346/api/Screen");
+            //ViewBag.listScreen = listScreen;
+            //var listProduct = await _client.GetFromJsonAsync<List<Product>>("https://localhost:44346/api/Product");
+            //ViewBag.listProduct = listProduct;
+            //var listColor = await _client.GetFromJsonAsync<List<Color>>("https://localhost:44346/api/Color");
+            //ViewBag.listColor = listColor;
+            //var listCardVGA = await _client.GetFromJsonAsync<List<CardVGA>>("https://localhost:44346/api/CardVGA");
+            //ViewBag.listCardVGA = listCardVGA;
             var httpClient = new HttpClient(); // tạo 1 http client để call api
             var reponseCpu = await httpClient.GetAsync("https://localhost:44346/api/Cpu");
             var reponseRam = await httpClient.GetAsync("https://localhost:44346/api/Ram");
@@ -97,9 +84,9 @@ namespace Sell_Laptop_Web.Controllers
             productDetail.Price = productDetailView.Price;
             productDetail.AvailableQuantity = productDetailView.AvailableQuantity;
             productDetail.Description = productDetailView.Description;
-            productDetail.Status = productDetailView.Status;
+            productDetail.Status = productDetailView.Status; productDetail.IdRam = listRam.FirstOrDefault(x => x.Ma == productDetailView.MaRam).Id;
             productDetail.IdProduct = listProduct.FirstOrDefault(x => x.Name == productDetailView.NameProduct).Id;
-            productDetail.IdRam = listRam.FirstOrDefault(x => x.Ma == productDetailView.MaRam).Id;
+
             productDetail.IdCpu = listCpu.FirstOrDefault(x => x.Ma == productDetailView.MaCpu).Id;
             productDetail.IdHardDrive = listHardDrive.FirstOrDefault(x => x.Ma == productDetailView.MaHardDrive).Id;
             productDetail.IdScreen = listScreen.FirstOrDefault(x => x.Ma == productDetailView.MaManHinh).Id;
@@ -126,66 +113,31 @@ namespace Sell_Laptop_Web.Controllers
             return View();
         }
         [HttpGet]
-        public Task<IActionResult> Update(Guid id)
+        public async Task<IActionResult> Update(Guid id)
         {
-            ProductDetail productDetail = null;
+            var productDetail = await _client.GetFromJsonAsync<ProductDetail>($"https://localhost:44346/api/ProductDetail/id?Id={id}");
+            return View(productDetail);
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri($"https://localhost:44346/api/ProductDetail/id?Id={id}");
-                //HTTP GET
-                var responseTask = client.GetAsync(client.BaseAddress);
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsAsync<ProductDetail>();
-                    readTask.Wait();
-
-                    productDetail = readTask.Result;
-                }
-            }
-            return Task.FromResult<IActionResult>(View(productDetail));
-            //   return View();
         }
-        public Task<IActionResult> Update(ProductDetail productDetail)
+        public async Task<IActionResult> Update(ProductDetail productDetail)
         {
-            using (var client = new HttpClient())
+            var result = _client.PutAsJsonAsync<ProductDetail>("https://localhost:44346/api/ProductDetail", productDetail).Result;
+            if (result.IsSuccessStatusCode)
             {
-                client.BaseAddress = new Uri("https://localhost:44346/api/ProductDetail");
-
-                //HTTP POST
-                var putTask = client.PutAsJsonAsync<ProductDetail>(client.BaseAddress, productDetail);
-                putTask.Wait();
-
-                var result = putTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-
-                    return Task.FromResult<IActionResult>(RedirectToAction("Index"));
-                }
+                return RedirectToAction("Index");
             }
-            return Task.FromResult<IActionResult>(View(productDetail));
+            return View(productDetail);
         }
 
-        public Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            using (var client = new HttpClient())
+            _client.BaseAddress = new Uri($"https://localhost:44346/api/ProductDetail/id?Id={id}");
+            var result = _client.DeleteAsync(_client.BaseAddress).Result;
+            if (result.IsSuccessStatusCode)
             {
-                client.BaseAddress = new Uri($"https://localhost:44346/api/ProductDetail/id?Id={id}");
-
-                //HTTP DELETE
-                var deleteTask = client.DeleteAsync(client.BaseAddress);
-                deleteTask.Wait();
-
-                var result = deleteTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    return Task.FromResult<IActionResult>(RedirectToAction("Index"));
-                }
+                return RedirectToAction("Index");
             }
-            return Task.FromResult<IActionResult>(RedirectToAction("Index"));
+            return RedirectToAction("Index");
         }
 
     }
